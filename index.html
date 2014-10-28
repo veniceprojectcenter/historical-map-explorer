@@ -30,7 +30,10 @@
 	<script>explorerInit();</script>
 </head>
 <body>
+	<!-- Map Container -->
 	<div id="map"></div>
+	
+	<!-- Top toolbar -->
 	<div class="header" id="mini-header">
 		<input class="search form-control" id="mini-search" placeholder="Search..." />
 		<div class="btn-group">
@@ -45,6 +48,8 @@
 			<button id="plus-sign" class="btn btn-default" data-toggle="tooltip" title="Get more information"><img class="icon" src="img/about.png" /></button>
 		</div>
 	</div>
+	
+	<!-- Login Pane -->
 	<div class="login panel panel-default">
 		<div class="panel-body">
 			<span id="login-text"><a id="login-link" href="#">Login</a> / <a id="signup-link" href="#">Sign up</a></span>
@@ -55,6 +60,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Info modal, shows info about the currently visible map -->
 	<div id="info-modal" class="modal fade" id="header">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -71,6 +78,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Modal to add a new geographical feature -->
 	<div id="new-feature" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -92,6 +101,8 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+	
+	<!-- Modal to add a new layer of geographical features  -->
 	<div id="new-layer" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -117,6 +128,8 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+	
+	<!-- Modal to clone one layer to another -->
 	<div id="clone-layer" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
