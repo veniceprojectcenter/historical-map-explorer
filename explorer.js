@@ -88,7 +88,7 @@ var dataUtilities = {
 /* Initialize everything needed. Create necessary objects
  * and setup the map
  */
-function debarbariInit() {
+function explorerInit() {
   // jQuery init
   $(document).ready(function() {
     // Get data from Firebase
@@ -106,7 +106,7 @@ function debarbariInit() {
     $("#dlbutton").click(function () {
         var link = document.createElement("a");
         link.href = downloader.getData();
-        link.download = "debarbari.png";
+        link.download = "explorer.png";
         var theEvent = document.createEvent("MouseEvent");
 
         // Here we create and dispatch a "realistic" event
@@ -306,7 +306,7 @@ function Downloader () {
 
     var link = document.createElement("a");
     link.href = canvas.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream');
-    link.download = "debarbari.png";
+    link.download = "explorer.png";
     var theEvent = document.createEvent("MouseEvent");
     theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
     link.dispatchEvent(theEvent);
