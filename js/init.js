@@ -1,4 +1,4 @@
-define(['dataUtilities', 'jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'LayerManager', 'Downloader', 'Leaflet', 'jquery-ui', 'LeafletDraw', 'LeafletMiniMap'], 
+define(['dataUtilities', 'jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'LayerManager', 'Downloader', 'Leaflet', 'jquery-ui', 'bootstrap', 'LeafletDraw', 'LeafletMiniMap'], 
 		function(dataUtilities, $, Firebase, FirebaseAuth, RectDrawer, PolyDrawer, LayerManager, Downloader, L) {
 	"use strict";
 	

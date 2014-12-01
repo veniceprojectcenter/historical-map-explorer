@@ -40,14 +40,21 @@
 	<div class="header" id="mini-header">
 		<input class="search form-control" id="mini-search" placeholder="Search..." />
 		<div class="btn-group">
-			<button id="dlbutton" class="btn btn-default" data-toggle="tooltip" title="Download what is currently visible"><img class="icon" src="img/filesave.png" /></button>
-			<button id="select" class="btn btn-default" data-toggle="tooltip" title="Download a selection"><img class="icon" src="img/select.png" /></button>
+			<div id="map-dropdown" class="btn-group">
+				<button id="maps" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-target="#map-dropdown" title="Select a map"><img class="icon" src="img/maps.png" /></button>
+				<ul class="dropdown-menu maps-menu" role="menu">
+				</ul>
+			</div>
 			<div id="layer-dropdown" class="btn-group">
 				<button id="layers" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-target="#layer-dropdown" title="Enable and disable layers"><img class="icon" src="img/layers.png" /></button>
 				<ul class="dropdown-menu layers-menu" role="menu">
 				</ul>
 			</div>
+		</div>
+		<div class="btn-group">
 			<button id="drawmode" class="btn btn-default" data-toggle="tooltip" title="Draw a new polygon"><img class="icon" src="img/pencil.png" /></button>
+			<button id="dlbutton" class="btn btn-default" data-toggle="tooltip" title="Download what is currently visible"><img class="icon" src="img/filesave.png" /></button>
+			<button id="select" class="btn btn-default" data-toggle="tooltip" title="Download a selection"><img class="icon" src="img/select.png" /></button>
 			<button id="plus-sign" class="btn btn-default" data-toggle="tooltip" title="Get more information"><img class="icon" src="img/about.png" /></button>
 		</div>
 	</div>
@@ -73,7 +80,7 @@
 					<h4 class="modal-title">The de'Barbari Map</h4>
 				</div>
 				<div class="modal-body">
-					<iframe style="border: none; width: 100%; height: 500px;" src="https://docs.google.com/document/d/1cyCoW299mZt4utjXZ95eD4_MYctKkfvK0GMFzvmDqgA/pub?embedded=true"></iframe>
+					<iframe style="border: none; width: 100%; height: 500px;" src="https://docs.google.com/document/d/1UKpaE8840syznkKYdn86LZPocZ53mdzL0Gn7Onp5rVM/pub?embedded=true"></iframe>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Okay!</button>
