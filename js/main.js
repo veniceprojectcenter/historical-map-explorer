@@ -11,25 +11,25 @@ require.config({
         LeafletMiniMap: 'lib/Control.MiniMap',
     },
     shim: {
-    	Firebase: {
-    		exports: 'Firebase'
-    	},
-    	FirebaseSimpleLogin: {
-    		deps: ['Firebase'],
-    		exports: 'FirebaseSimpleLogin'
-    	},
-    	Leaflet: {
-    		exports: 'L',
-    	},
-    	LeafletDraw: {
-    		deps: ['Leaflet'],
-    		exports: 'L'
-    	},
-    	LeafletMiniMap: {
-    		deps: ['Leaflet'],
-    		exports: 'L'
-    	}
+      Firebase: {
+        exports: 'Firebase'
+      },
+      FirebaseSimpleLogin: {
+        deps: ['Firebase'],
+        exports: 'FirebaseSimpleLogin'
+      },
+      Leaflet: {
+        exports: 'L',
+      },
+      LeafletDraw: {
+        deps: ['Leaflet'],
+        exports: 'L'
+      },
+      LeafletMiniMap: {
+        deps: ['Leaflet'],
+        exports: 'L'
+      }
     }
 });
 
-require(['init'], function(i) { i(); });
+require(['init']);
