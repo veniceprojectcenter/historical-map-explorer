@@ -1,138 +1,138 @@
 html, body
 {
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  font-family: 'Lucida Grande',Geneva,Arial,Verdana,sans-serif;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	font-family: 'Lucida Grande',Geneva,Arial,Verdana,sans-serif;
 }
 .nonbold-header-text
 {
-  margin: 0;
-  padding: 6px;
-  border:0;
+	margin: 0;
+	padding: 6px;
+	border:0;
 }
 .icon
 {
-  height: 20px;
-  width: 20px;
-  vertical-align: middle;
+	height: 20px;
+	width: 20px;
+	vertical-align: middle;
 }
 .search
 {
-  display: inline; /* Override Bootstrap */
-  width: 50%;
-  border-radius: 5px;
+	display: inline; /* Override Bootstrap */
+	width: 50%;
+	border-radius: 5px;
 }
 .header-text
 {
-  margin: 0;
-  padding: 6px;
-  border:0;
-  font-size: 20pt;
+	margin: 0;
+	padding: 6px;
+	border:0;
+	font-size: 20pt;
 }
 .header-size-control
 {
-  font-size: x-large;
-  text-align: center;
-  vertical-align: middle;
-  width: 30px !important;
-  height: 30px !important;
-  padding: 1px;
-  border: 1px solid black;
-  display: inline-block;
+	font-size: x-large;
+	text-align: center;
+	vertical-align: middle;
+	width: 30px !important;
+	height: 30px !important;
+	padding: 1px;
+	border: 1px solid black;
+	display: inline-block;
 }
 .header
 {
-  position: fixed;
-  top: 10px;
-  left: 50px;
-  right: 10px;
+	position: fixed;
+	top: 10px;
+	left: 50px;
+	right: 10px;
 }
 .gap
 {
-  display: inline-block;
-  width: 10px;
+	display: inline-block;
+	width: 10px;
 }
 .rect
 {
-  background-color: rgba(0,146,143,0.3);
-  border: 1px solid lightblue;
-  position: fixed;
-  width: 0;
-  height: 0;
-  margin: 0;
+	background-color: rgba(0,146,143,0.3);
+	border: 1px solid lightblue;
+	position: fixed;
+	width: 0;
+	height: 0;
+	margin: 0;
 }
 .rect-canvas
 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999; /* In front */
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999; /* In front */
 }
 .login {
-  position: fixed;
-  top: 10px;
-  right: 10px;
+	position: fixed;
+	top: 10px;
+	right: 10px;
 }
 .login-text {
-  color: black;
+	color: black;
 }
 .login-form {
-  display: none;
-  background: white;
-  padding: 15px;
+	display: none;
+	background: white;
+	padding: 15px;
 }
 .login-input {
-  border-radius: 5px;
+	border-radius: 5px;
 }
 .popup {
-  font-size: large;
+	font-size: large;
 }
 .clone {
-  font-size:x-small;
+	font-size:x-small;
 }
 .org-logo {
-  width: 200px;
+	width: 200px;
 }
 #minus-sign
 {
-  position: absolute;
-  top: 5px;
-  right: 5px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
 }
 #mini-header
 {
-  display: block; /* Default on load */
+	display: block; /* Default on load */
 }
 #header
 {
-  display: none; /* Default on load */
-  padding: 0;
-  background-color: #bbb;
-  border: 1px solid #888;
-  opacity: 0.6;
+	display: none; /* Default on load */
+	padding: 0;
+	background-color: #bbb;
+	border: 1px solid #888;
+	opacity: 0.6;
 }
 #map
 {
-  height: 100%;
-  width: 100%;
+	height: 100%;
+	width: 100%;
 }
 #drawmode
 {
-  display: none; /* Invisible by defualt */
+	display: none; /* Invisible by defualt */
 }
 
 .dropdown-menu:empty {
-  height: 70px;
-  background-image: url('/img/ajax-loader.gif');
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
+	height: 70px;
+	background-image: url('/img/ajax-loader.gif');
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
 }
 
 /* Add support for dropdown submenus */
