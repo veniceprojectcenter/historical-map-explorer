@@ -31,6 +31,7 @@ define(['jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataS
     
 		fb.child('features').on('child_added', function (snapshot) {
 			var feature = snapshot.val();
+      feature.id = snapshot.name();
 			dataService.push(feature);
 			autocompleteNames.push(feature.properties.name);
 		});

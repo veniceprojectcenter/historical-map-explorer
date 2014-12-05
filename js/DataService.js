@@ -2,9 +2,13 @@ define(['Firebase'], function(Firebase) {
 	
 	function DataService(fb, defaultMapId) {
 		var data = [];
+		var dataById = {};
 		var currentMapId = defaultMapId;
 		
-		this.push = data.push.bind(data);
+		this.push = function(item) {
+			data.push(item);
+			dataById[item.id] = item;
+		};
 		
 		this.get = function(path, callback) {
 			fb.child(path).on('child_added', callback, console.error.bind(console, 'Firebase error:'));
@@ -19,37 +23,17 @@ define(['Firebase'], function(Firebase) {
 		};
 		
 		this.getFeaturesForLayer = function(layer, callback) {
-			var featuresCache = {};
-			var geometriesCache = {};
-			
-			// Get features
-			this.get('features', function(snapshot) {
-				var featureKey = snapshot.name();
-				if (geometriesCache[featureKey]) {
-					// Handle case where this feature's geometry was already loaded
-					var feature = snapshot.val();
-					feature.geometry = geometriesCache[featureKey];
-					feature.id = featureKey;
-					callback(feature);
-				} else {
-					// Handle case where the geometry isn't loaded yet
-					featuresCache[featureKey] = snapshot.val();
-				}
-			});
-			
-			// Get geometries
-			this.get('geometries/'+currentMapId, function(snapshot) {
-				var geometryKey = snapshot.name();
-				if (featuresCache[geometryKey]) {
-					// Handle case where this feature was already loaded
-					var feature = featuresCache[geometryKey];
-					feature.geometry = snapshot.val();
-					feature.id = geometryKey;
-					callback(feature);
-				} else {
-					// Handle case where the feature isn't loaded yet
-					geometriesCache[geometryKey] = snapshot.val();
-				}
+			this.findDataByType(layer).forEach(function(feature) {
+				fb.child('geometries')
+					.child(currentMapId)
+					.child(feature.id)
+					.once('value', function (snapshot) {
+						var geometryKey = snapshot.name();
+						
+						feature.geometry = snapshot.val();
+
+						callback(feature);
+				});
 			});
 		};
 		
@@ -71,7 +55,7 @@ define(['Firebase'], function(Firebase) {
 		};
 
 		/* Searches the given data of landmarks for ones with the given type.
-		 * This will return a data of results
+		 * This will return a list of results
 		 */
 		this.findDataByType = function (type) {
 			var results = [],
