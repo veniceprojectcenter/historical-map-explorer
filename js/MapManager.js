@@ -1,17 +1,43 @@
-define(['jquery'], function($) {
+define(['jquery', 'Leaflet', 'LeafletDraw', 'LeafletMiniMap'], function($, L) {
 	
-	function MapManager(dataService, layerManager) {
+	function MapManager(dataService) {
 		var self = this;
 		var currentMapGeometries = {};
-		var map;
+		var maps = {};
+		var switchFunc = function() {};
+		
+		var mainLayer, miniMap;
 		
 		this.switchMap = function(newMapId) {
-			fb.child('geographies').child(currentMapId).on('child_added', function(snapshot) {
-				var val = snapshot.val();
-				var featureId = snapshot.key();
+			dataService.fb.child('maps').child(newMapId).once('value', function(mapSnap) {
+				var tileUrl = mapSnap.val().tiles;
 				
-				currentMapGeometries
+				if (mainLayer) self.map.removeLayer(mainLayer);
+				mainLayer = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', {
+					minZoom: 2, 
+					maxZoom: 8, 
+					tms: true, 
+					/*bounds: [[-84.3, 185.5], [-48.35, 420.7]],*/ 
+				}).addTo(self.map);
+				
+				if (miniMap) self.map.removeControl(miniMap);
+				var tms2 = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', {
+					minZoom: 1, 
+					maxZoom: 1, 
+					tms: true
+				});
+				miniMap = new L.Control.MiniMap(tms2, { toggleDisplay: true }).addTo(self.map);
+				
+				dataService.setMap(newMapId);
+				switchFunc(mapSnap.val());
+				
+				$('.map-menu-link').css('font-weight', 400);
+				$('#'+newMapId+'-map').css('font-weight', 600);
 			});
+		};
+		
+		this.onSwitch = function (func) {
+			switchFunc = func;
 		};
 		
 		/* Create a menu item for each map
@@ -19,9 +45,10 @@ define(['jquery'], function($) {
 		this.initMenu = function() {
 			dataService.get('maps', function (snapshot) {
 				var data = snapshot.val();
-				
+				maps[snapshot.name()] = data;
+					
 				$(document).ready(function() {
-					var newOption = '<li role="presentation"><a role="menuitem" id="'+data.id+'-map" href="#">'+data.name+'</a></li>';
+					var newOption = '<li role="presentation"><a role="menuitem"'+(data.id === dataService.currentMap()  ? ' style="font-weight: 600;"' : '')+' class="map-menu-link" id="'+data.id+'-map" href="#"><b>'+data.year+'</b>: '+data.name+'</a></li>';
 			
 					if (data.parent) {
 						var strippedParentName = data.parent.replace(/\s/g, '');
@@ -29,7 +56,7 @@ define(['jquery'], function($) {
 							var newGroup = ' <li class="dropdown-submenu"><a href="#">'+data.parent+'</a><ul id="'+strippedParentName+'-menu" class="dropdown-menu"></ul></li>';
 							$('#new-map-parent-other').before('<option value="'+data.parent+'">'+data.parent+'</option>');
 			
-							if (loggedIn) {
+							if ($('#new-map-menu').length > 0) {
 								$('#new-map-menu').before(newGroup);
 							} else {
 								$('.maps-menu').append(newGroup);
@@ -37,12 +64,14 @@ define(['jquery'], function($) {
 						}
 						$('#'+strippedParentName+'-menu').append(newOption);
 					} else { // If the object has no parent
-						if (loggedIn) {
+						if ($('#new-map-menu').length > 0) {
 							$('#new-map-menu').before(newOption);
 						} else {
 							$('.maps-menu').append(newOption);
 						}
 					}
+					
+					$('.maps-menu').removeClass('loading');
 			
 					$('#' + data.id + '-map').click(self.switchMap.bind(this, data.id));
 					$('.maps-select').append('<option value="'+data.id+'">'+data.name+'</option>');
@@ -52,12 +81,9 @@ define(['jquery'], function($) {
 		
 		this.initMap = function() {
 			// Initialize leaflet map
-			map = L.map('map', { center: [-73, 294/*22973.5*/], zoom: 3, attributionControl: false });
-			new L.Control.Attribution({ prefix: false, position: 'bottomleft' }).addAttribution('<a href="http://veniceprojectcenter.org"><img src="img/vpc-small.png"></img></a>').addTo(map);
-			L.tileLayer('http://debarbari.veniceprojectcenter.org/tiles2/{z}/{x}/{y}.png', {minZoom: 2, maxZoom: 8, tms: true, /*bounds: [[-84.3, 185.5], [-48.35, 420.7]],*/ errorTileUrl: 'http://placehold.it/256'}).addTo(map);
-
-		//	var tms2 = L.tileLayer('http://debarbari.veniceprojectcenter.org/tiles2/{z}/{x}/{y}.png', {minZoom: 1, maxZoom: 1, tms: true, bounds: [[-46, 180], [-100, 432]]});
-		//	var miniMap = new L.Control.MiniMap(tms2, { toggleDisplay: true }).addTo(map);
+			this.map = L.map('map', { center: [-73, 294], zoom: 3, attributionControl: false });
+			
+			this.switchMap( dataService.currentMap() );
 
 			// Add zoom out button
 			var ViewAllControl = L.Control.extend({
@@ -86,11 +112,36 @@ define(['jquery'], function($) {
 				}
 			});
 
-			map.addControl(new ViewAllControl());
-		
-			//! For debugging
-			window.map = map;
+			this.map.addControl(new ViewAllControl());
 
+		};
+		
+		/* Add a new layer to the map.
+		 * Updates the database and the layer menu
+		 */
+		this.addNewMap = function () {
+			// Read values from the form
+			var name = $('#new-map-name').val();
+			var id = $('#new-map-id').val();
+			var year = $('#new-map-year').val();
+			var tiles = $('#new-map-tiles').val();
+
+			// Fail silently if fields empty for now
+			if (!(name || id || year || tiles)) {
+				return;
+			} else if (maps[id]) {
+				// Fail silently if duplicate
+				return;
+			}
+
+			dataService.fb.child('maps').child(id).set({
+				name: name, 
+				id: id, 
+				year: year, 
+				tiles: tiles, 
+				createdBy: dataService.auth.getUser().uid
+			});
+			$('#new-map').modal('hide');
 		};
 	}
 	

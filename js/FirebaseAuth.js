@@ -4,6 +4,12 @@ define(['FirebaseSimpleLogin'], function(FirebaseSimpleLogin) {
 	 */
 	function FirebaseAuth (fb) {
 		var auth;
+		var fbUser;
+		var loggedIn;
+		
+		this.getUser = function() {
+			return fbUser;
+		};
 	
 		/* Called when anything related to the state of the user occurs.
 		 * This is called when the user is logged in or out, or if login
@@ -18,6 +24,7 @@ define(['FirebaseSimpleLogin'], function(FirebaseSimpleLogin) {
 				$('#login-form').hide();
 			}
 			else if (user) { /* Logged in */
+				fbUser = user;
 				loggedIn = true;
 				$('#login-form').hide();
 				$('#login-text').hide();

@@ -21,12 +21,12 @@ define(function() {
 			}
 	
 			return c;
-		};
+		}
 	
 		/* Returns an image URL from data on the map
 		 */
 		this.getData = function () {
-			var c = this.getCanvasFromMap();
+			var c = getCanvasFromMap();
 	
 			var img_url = c.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream');
 			return img_url;
