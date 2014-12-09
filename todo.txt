@@ -1,0 +1,2 @@
+- Edit feature creation to handle maps, make sure to populate <feature>.propreties.maps
+- Map creation
