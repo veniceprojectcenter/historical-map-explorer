@@ -29,6 +29,10 @@ require.config({
 		LeafletMiniMap: {
 			deps: ['Leaflet'],
 			exports: 'L'
+		},
+		bootstrap: {
+			deps: ['jquery'],
+			exports: '$'
 		}
 	}
 });
