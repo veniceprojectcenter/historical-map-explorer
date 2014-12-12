@@ -27,9 +27,8 @@ define(['Firebase', 'lodash'], function(Firebase, _) {
 		var data = [];
 		var dataById = {};
 		var currentMapId = defaultMapId;
-		// Array of data needed to cancel geometry requests. Not functions,
-		// the variable name is wrong
-		var geometryRequestCancelFuncs = [];
+		// Array of data needed to cancel geometry requests
+		var geometryRequests = [];
 		
 		this.fb = fb;
 		this.auth = fbAuth;
@@ -104,50 +103,33 @@ define(['Firebase', 'lodash'], function(Firebase, _) {
 			var data = this.findDataByType(layer);
 			
 			data.forEach(function(feature) {
-				var geometries = {}; // Does not include the geometry for the chosen map
-				var numGeometries = 0;
+				var ref = fb.child('geometries').child(chosenMapId).child(feature.id);
+				var requestInfo = {
+					'ref': ref,
+					'layer': feature.properties.type
+				};
+				var getGeometry = function(geometrySnap) {
+					// If there isn't a geometry, wait until there is one
+					// (by returning instead of continuing and canceling the request)
+					if (geometrySnap.val() === null) return;
+					
+					feature.geometry = geometrySnap.val();
+					callback(feature);
+					
+					// Remove the requestInfo because it is no longer needed
+					geometryRequests.splice(geometryRequests.indexOf(requestInfo), 1);
+					// Has to be canceled manually because 'on' was used instead of 'once'
+					ref.off('value');
+				};
 				
-				var mapsToSearch = feature.properties.maps || [];
-				// Always search this map in case the user adds a feature to it later
-				if (feature.properties.maps.indexOf(chosenMapId) === -1) mapsToSearch.push(chosenMapId);
-				mapsToSearch.forEach(function(mapId) {
-					var ref = fb.child('geometries').child(mapId).child(feature.id);
-					var cancelRequest = {
-						'ref': ref,
-						'layer': feature.properties.type
-					};
-					var getGeometry = function(geometrySnap) {
-						// If there isn't a geometry, wait until there is one
-						// (by returning instead of continuing and canceling the request)
-						if (geometrySnap.val() === null && mapId === chosenMapId) return;
-						
-						numGeometries++;
-						if (mapId === chosenMapId) {
-							feature.geometry = geometrySnap.val();
-						} else {
-							geometries[mapId] = geometrySnap.val();
-						}
-						
-						if (numGeometries === mapsToSearch.length) {
-							callback(feature, geometries);
-						}
-						
-						// Remove the cancelRequest because it is no longer needed
-						geometryRequestCancelFuncs.splice(geometryRequestCancelFuncs.indexOf(cancelRequest), 1);
-						// Has to be canceled manually because 'on' was used instead of 'once'
-						cancelRequest.ref.off('value');
-					};
-					
-					// Use 'on' instead of 'once' because 'once' is uncancelable
-					ref.on('value', getGeometry);
-					geometryRequestCancelFuncs.push(cancelRequest);
-					
-				});
+				// Use 'on' instead of 'once' because 'once' is uncancelable
+				ref.on('value', getGeometry);
+				geometryRequests.push(requestInfo);
 			});
 		};
 		
 		this.cancelGeometryRequests = function(whichLayer) {
-			geometryRequestCancelFuncs = geometryRequestCancelFuncs.filter(function(obj) {
+			geometryRequests = geometryRequests.filter(function(obj) {
 				if (!whichLayer || obj.layer === whichLayer) {
 					obj.ref.off('value');
 					return false; // Don't keep in the array

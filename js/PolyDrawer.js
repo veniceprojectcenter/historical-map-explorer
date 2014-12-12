@@ -95,7 +95,10 @@ define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
 			// NOTE: PolyLayer is an object-global variable
 			if ($('#create-coordinates').hasClass('active')) {
 				var featureId = $('#old-feature').val();
-				// NOTE: In this case, feature will be undefined
+				feature = dataService.featureById(featureId);
+				if (feature.properties.maps.indexOf(dataService.currentMap()) === -1) {
+					feature.properties.maps.push(dataService.currentMap());
+				} 
 				// Add the new geometry
 				dataService.fb.child('geometries')
 					.child(dataService.currentMap())
@@ -105,8 +108,7 @@ define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
 				dataService.fb.child('features')
 					.child(featureId)
 					.child('properties/maps')
-					.child(dataService.featureById(featureId).properties.maps.length)
-					.set(dataService.currentMap());
+					.set(feature.properties.maps);
 			} else if (feature) {
 				// XXX fix name
 				if (!name) return;
@@ -126,6 +128,7 @@ define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
 						type: type,
 						link: link,
 						zoom: mapManager.map.getZoom(),
+						maps: [dataService.currentMap()],
 						center: {
 							lat: polyLayer.getBounds().getCenter().lat,
 							lng: polyLayer.getBounds().getCenter().lng

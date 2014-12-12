@@ -128,10 +128,13 @@ define(['lodash'], function(_) {
 				color = layerColors[type];
 			}
 			
+			// This is used way down in the "visible on x other maps" loop
+			var currentMap = dataService.currentMap();
+			
 			// If the layer is not visible, create it
 			polyState[type] = [];
 			enabledLayers.push(type);
-			dataService.getFeaturesForLayer(type, function(feature, otherGeometries) {
+			dataService.getFeaturesForLayer(type, function(feature) {
 				// Detect whether this layer was disabled since this function
 				// was called. This should rarely happen because callbacks are canceled.
 				if (!polyState[type]) return;
@@ -146,14 +149,17 @@ define(['lodash'], function(_) {
 						if (feature.properties.link) {
 							content = '<a href="' + feature.properties.link + '" target="blank_">' + content + '</a>';
 						}
-						var numGeometries = Object.keys(otherGeometries).length;
-						if (numGeometries > 0) {
-							content += '<details><summary>This feature appears on '+numGeometries+' other '+(numGeometries === 1 ? 'map' : 'maps')+'</summary>';
-							Object.keys(otherGeometries).sort(function(a, b) {
+						var numMaps = feature.properties.maps.length - 1; // Subtract one for the current map
+						if (numMaps > 0) {
+							content += '<details><summary>This feature appears on '+numMaps+' other '+(numMaps === 1 ? 'map' : 'maps')+'</summary>';
+							Object.keys(feature.properties.maps).map(function(k) {
+								return feature.properties.maps[k];
+							}).sort(function(a, b) {
 								// Sort by year
 								return mapManager.getMap(a).year - mapManager.getMap(b).year;
-							}).forEach(function(geomKey) {
-								content += '<a class="show_other_map" data-map-id="'+geomKey+'">'+mapManager.mapLabel(geomKey)+'</a>';
+							}).forEach(function(mapId) {
+								if (mapId === currentMap) return;
+								content += '<a class="show_other_map" data-map-id="'+mapId+'">'+mapManager.mapLabel(mapId)+'</a>';
 							});
 							content += '</details>';
 						} else {
