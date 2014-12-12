@@ -1,7 +1,9 @@
-define(function() {
+define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
+	"use strict";
+	
 	/* Holds code for drawing new polygon features on the map
 	 */
-	function PolyDrawer() {
+	function PolyDrawer(mapManager, layerManager, dataService) {
 		var points = [],
 				markers = [],
 				newPoly = null,
@@ -19,35 +21,39 @@ define(function() {
 			if (state === "edit") {
 				editor.disable();
 				state = "editend";
+				
+				var selectedData = layerManager.selectedData();
 	
 				$('#new-feature-name').val(selectedData.properties.name);
 				$('#new-feature-type').val(selectedData.properties.type);
 				$('#new-feature-link').val(selectedData.properties.link);
 	
 				$('#new-feature').modal('show');
+				$('.layers-select').val( layerManager.mostRecentlyEnabled() );
+				$('.features-select').trigger('change');
 				$('#drawmode').removeClass('active');
 				return;
 			}
 	
 			// XXX HACK ALERT
 			// Check if a feature is selected. This will unselect it.
-			var layerCount = Object.keys(map._layers).length;
-			map.closePopup();
-			var newLayerCount = Object.keys(map._layers).length;
+			var layerCount = Object.keys(mapManager.map._layers).length;
+			mapManager.map.closePopup();
+			var newLayerCount = Object.keys(mapManager.map._layers).length;
 			var objectSelected = layerCount > newLayerCount;
 	
 			if(objectSelected) { // If an object is selected, edit it
 				// selectedPoly in the poly click handler
-				polyLayer = selectedPoly;
-				editor = new L.Edit.Poly(selectedPoly);
+				polyLayer = layerManager.selectedPoly();
+				editor = new L.Edit.Poly(polyLayer);
 				editor.enable();
 				state = "edit";
-			}
-	
-			else { // Draw a new polygon
-				map.once('draw:created', function (e) {
+			} else { // Draw a new polygon
+				mapManager.map.once('draw:created', function (e) {
 					polyLayer = e.layer;
 					$('#new-feature').modal('show');
+					$('.layers-select').val( layerManager.mostRecentlyEnabled() );
+					$('.features-select').trigger('change');
 					$('#drawmode').removeClass('active');
 					state = "start";
 				});
@@ -57,7 +63,7 @@ define(function() {
 					iconUrl: "img/circle.png",
 					iconSize: [8,8]
 				});
-				new L.Draw.Polygon(map, {icon: circleIcon}).enable();
+				new L.Draw.Polygon(mapManager.map, {icon: circleIcon}).enable();
 				state = "draw";
 			}
 	
@@ -74,41 +80,62 @@ define(function() {
 			var type = $('#new-feature-type').val();
 			var link = $('#new-feature-link').val();
 	
-			// XXX fix name
-			if (!name) return;
-	
-			// If the feature already exists, update it
+			// If the feature already exists, update it			
 			var feature;
+			var geometry;
 			if (state === "editend") {
-				feature = selectedData;
+				feature = layerManager.selectedData();
 				state = "start";
+			} else {
+				feature = dataService.findData(name);
 			}
-			else {
-				feature = dataUtilities.findData(DATA, name);
-			}
-			if (feature) {
+			
+			// First, check whether the user is adding a whole new feature
+			// or just new coordinates
+			// NOTE: PolyLayer is an object-global variable
+			if ($('#create-coordinates').hasClass('active')) {
+				var featureId = $('#old-feature').val();
+				// NOTE: In this case, feature will be undefined
+				// Add the new geometry
+				dataService.fb.child('geometries')
+					.child(dataService.currentMap())
+					.child(featureId)
+					.set(polyLayer.toGeoJSON().geometry);
+				// Add the map to the array
+				dataService.fb.child('features')
+					.child(featureId)
+					.child('properties/maps')
+					.child(dataService.featureById(featureId).properties.maps.length)
+					.set(dataService.currentMap());
+			} else if (feature) {
+				// XXX fix name
+				if (!name) return;
 				feature.properties.name = name;
-				feature.geometry = polyLayer.toGeoJSON().geometry;
+				geometry = polyLayer.toGeoJSON().geometry;
 				feature.properties.type = type;
 				feature.properties.link = link;
-				fb.child('vpc/features').set(DATA);
-			}
-			else {
+				dataService.fb.child('features').child(feature.id).set(feature);
+				dataService.fb.child('geometries').child(dataService.currentMap()).child(feature.id).set(geometry);
+			} else {
+				// XXX fix name
+				if (!name) return;
 				var newFeature = {
 					type: "Feature",
-					geometry: polyLayer.toGeoJSON().geometry,
 					properties: {
 						name: name,
 						type: type,
 						link: link,
-						zoom: map.getZoom(),
+						zoom: mapManager.map.getZoom(),
 						center: {
 							lat: polyLayer.getBounds().getCenter().lat,
 							lng: polyLayer.getBounds().getCenter().lng
 						}
 					}
 				};
-				fb.child('vpc/features').push(newFeature);
+				geometry = polyLayer.toGeoJSON().geometry;
+				dataService.fb.child('features').push(newFeature).once('value', function(featureSnap) {
+					dataService.fb.child('geometries').child(dataService.currentMap()).child(featureSnap.key()).set(geometry);
+				});
 			}
 	
 			$('#new-feature').modal('hide');

@@ -1,5 +1,42 @@
-define(['jquery', 'lodash', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataService', 'LayerManager', 'MapManager', 'Downloader', 'jquery-ui', 'bootstrap'], 
-		function($, _, Firebase, FirebaseAuth, RectDrawer, PolyDrawer, DataService, LayerManager, MapManager, Downloader) {
+// From: https://github.com/litejs/natural-compare-lite
+String.naturalCompare = function(a, b) {
+	var i, codeA, codeB = 1, posA = 0, posB = 0, alphabet = String.alphabet;
+
+	function getCode(str, pos, code) {
+		if (code) {
+			for (i = pos; code = getCode(str, i), code < 76 && code > 65;) ++i;
+			return +str.slice(pos - 1, i);
+		}
+		code = alphabet && alphabet.indexOf(str.charAt(pos));
+		return code > -1 ? code + 76 : ((code = str.charCodeAt(pos) || 0), code < 45 || code > 127) ? code
+			: code < 46 ? 65               // -
+			: code < 48 ? code - 1
+			: code < 58 ? code + 18        // 0-9
+			: code < 65 ? code - 11
+			: code < 91 ? code + 11        // A-Z
+			: code < 97 ? code - 37
+			: code < 123 ? code + 5        // a-z
+			: code - 63;
+	}
+
+
+	if ((a+="") != (b+="")) for (;codeB;) {
+		codeA = getCode(a, posA++);
+		codeB = getCode(b, posB++);
+
+		if (codeA < 76 && codeB < 76 && codeA > 66 && codeB > 66) {
+			codeA = getCode(a, posA, posA);
+			codeB = getCode(b, posB, posA = i);
+			posB = i;
+		}
+
+		if (codeA != codeB) return (codeA < codeB) ? -1 : 1;
+	}
+	return 0;
+};
+
+define(['jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataService', 'LayerManager', 'MapManager', 'Downloader', 'jquery-ui', 'bootstrap'], 
+		function($, Firebase, FirebaseAuth, RectDrawer, PolyDrawer, DataService, LayerManager, MapManager, Downloader) {
 	"use strict";
 	
 	/// CONSTANTS
@@ -14,12 +51,12 @@ define(['jquery', 'lodash', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
 	var dataService = new DataService(fb, fbAuth, DEFAULT_MAP);
 	var mapManager = new MapManager(dataService);
 	var layerManager = new LayerManager(dataService, mapManager);
-	mapManager.onSwitch(function() { layerManager.reload(); });
+	mapManager.onSwitch(layerManager.reload.bind(layerManager));
 
 	/// EXTRA FUNCTIONALITY
 	var downloader = new Downloader();
 	var rectDrawer = new RectDrawer();
-	var polyDrawer = new PolyDrawer();
+	var polyDrawer = new PolyDrawer(mapManager, layerManager, dataService);
 	
 	
 	/* 
@@ -30,7 +67,7 @@ define(['jquery', 'lodash', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
 		
 		fb.child('features').on('child_added', function (snapshot) {
 			var feature = snapshot.val();
-			feature.id = snapshot.name();
+			feature.id = snapshot.key();
 			dataService.push(feature);
 			autocompleteNames.push(feature.properties.name);
 		});
@@ -75,9 +112,9 @@ define(['jquery', 'lodash', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
 	}
 		
 	// Kick off the loading
-	initializeSearch();
-	layerManager.initMenu();
 	mapManager.initMenu();
+	layerManager.initMenu();
+	initializeSearch();
 
 	// jQuery init
 	$(document).ready(function() {
@@ -113,6 +150,16 @@ define(['jquery', 'lodash', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
 		$('#new-map-button').click(mapManager.addNewMap);
 		$('#new-feature-submit').click(polyDrawer.submitFeature);
 		$('#new-feature-discard').click(polyDrawer.discardFeature);
+		
+		$('#feature-filter').on('change', function() {
+			var features = dataService.findDataByType($(this).val()).sort(String.naturalCompare);
+			
+			var options = features.map(function(feature) {
+				return '<option value="'+feature.id+'">'+feature.properties.name+'</option>';
+			});
+			
+			$('.features-select').html(options.join(''));
+		});
 
 		$('#clone-button').click(layerManager.clonePoly);
 		
@@ -120,6 +167,10 @@ define(['jquery', 'lodash', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
 			layerManager.cloneModal();
 		}).on('click', '.delete', function() {
 			layerManager.deletePoly();
+		}).on('click', '.show_other_map', function() {
+			var selectedData = layerManager.selectedData();
+			mapManager.map.closePopup();
+			mapManager.switchMap($(this).attr('data-map-id'), selectedData.id);
 		});
 
 		$('#plus-sign').click(function () {

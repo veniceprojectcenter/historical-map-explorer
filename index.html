@@ -83,11 +83,30 @@
 					<h4 class="modal-title">Save new feature</h4>
 				</div>
 				<div class="modal-body">
-					<label for="new-feature-name">Name: </label><input id="new-feature-name" class="form-control" placeholder="Name of this landmark">
-					<br />
-					<label for="new-feature-type">Type: </label><select id="new-feature-type" class="form-control layers-select"></select>
-					<br />
-					<label for="new-feature-link">Link: </label><input id="new-feature-link" class="form-control" placeholder="A link to more information (such as a Venipedia page)"></select>
+					<div role="tabpanel">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active"><a href="#create-coordinates" aria-controls="create-coordinates" role="tab" data-toggle="tab">Existing Feature</a></li>
+							<li role="presentation"><a href="#create-feature" aria-controls="create-feature" role="tab" data-toggle="tab">New Feature</a></li>
+						</ul>
+
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="create-coordinates">
+								<label for="feature-filter">Type: </label><select id="feature-filter" class="form-control layers-select"></select>
+								<label for="old-feature">Feature: </label><select id="old-feature" class="form-control features-select"></select>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="create-feature">
+								<label for="new-feature-name">Name: </label><input id="new-feature-name" class="form-control" placeholder="Name of this landmark">
+								<br />
+								<label for="new-feature-type">Type: </label><select id="new-feature-type" class="form-control layers-select"></select>
+								<br />
+								<label for="new-feature-link">Link: </label><input id="new-feature-link" class="form-control" placeholder="A link to more information (such as a Venipedia page)"></select>
+							</div>
+						</div>
+
+					</div>
+
 				</div>
 				<div class="modal-footer">
 					<button id="new-feature-discard" type="button" class="btn btn-danger">Delete</button>

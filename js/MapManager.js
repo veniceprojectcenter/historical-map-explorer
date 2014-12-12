@@ -1,4 +1,4 @@
-define(['jquery', 'Leaflet', 'LeafletDraw', 'LeafletMiniMap'], function($, L) {
+define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 	
 	function MapManager(dataService) {
 		var self = this;
@@ -8,16 +8,32 @@ define(['jquery', 'Leaflet', 'LeafletDraw', 'LeafletMiniMap'], function($, L) {
 		
 		var mainLayer, miniMap;
 		
-		this.switchMap = function(newMapId) {
+		function shiftBounds (bounds) {
+			return [[bounds[0][0], bounds[0][1] + 360], [bounds[1][0], bounds[1][1] + 360]];
+		}
+		
+		this.mapLabel = function (mapId) {
+			return '<b>'+maps[mapId].year+'</b>: '+maps[mapId].name;
+		};
+		
+		this.getMap = function (mapId) {
+			return maps[mapId];
+		};
+		
+		this.switchMap = function(newMapId, selectedFeatureId) {
+			dataService.removeGeometries();
+			
 			dataService.fb.child('maps').child(newMapId).once('value', function(mapSnap) {
-				var tileUrl = mapSnap.val().tiles;
+				var mapData = mapSnap.val();
+				var tileUrl = mapData.tiles;
 				
 				if (mainLayer) self.map.removeLayer(mainLayer);
 				mainLayer = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', {
 					minZoom: 2, 
-					maxZoom: 8, 
+					maxZoom: newMapId === 'debarbari' ? 8 : 7, //! HACK -- deBarbari has more zoom levels than the rest 
 					tms: true, 
-					/*bounds: [[-84.3, 185.5], [-48.35, 420.7]],*/ 
+					bounds: mapData.bounds, 
+					contonuousWorld: true
 				}).addTo(self.map);
 				
 				if (miniMap) self.map.removeControl(miniMap);
@@ -28,8 +44,10 @@ define(['jquery', 'Leaflet', 'LeafletDraw', 'LeafletMiniMap'], function($, L) {
 				});
 				miniMap = new L.Control.MiniMap(tms2, { toggleDisplay: true }).addTo(self.map);
 				
+				if (mapData.bounds) self.map.fitBounds(shiftBounds(mapData.bounds));
+				
 				dataService.setMap(newMapId);
-				switchFunc(mapSnap.val());
+				switchFunc(mapSnap.val(), selectedFeatureId);
 				
 				$('.map-menu-link').css('font-weight', 400);
 				$('#'+newMapId+'-map').css('font-weight', 600);
@@ -43,12 +61,12 @@ define(['jquery', 'Leaflet', 'LeafletDraw', 'LeafletMiniMap'], function($, L) {
 		/* Create a menu item for each map
 		 */
 		this.initMenu = function() {
-			dataService.get('maps', function (snapshot) {
+			dataService.fb.child('maps').orderByChild('year').on('child_added', function (snapshot) {
 				var data = snapshot.val();
-				maps[snapshot.name()] = data;
+				maps[snapshot.key()] = data;
 					
 				$(document).ready(function() {
-					var newOption = '<li role="presentation"><a role="menuitem"'+(data.id === dataService.currentMap()  ? ' style="font-weight: 600;"' : '')+' class="map-menu-link" id="'+data.id+'-map" href="#"><b>'+data.year+'</b>: '+data.name+'</a></li>';
+					var newOption = '<li role="presentation"><a role="menuitem"'+(data.id === dataService.currentMap()  ? ' style="font-weight: 600;"' : '')+' class="map-menu-link" id="'+data.id+'-map" href="#">'+self.mapLabel(data.id)+'</a></li>';
 			
 					if (data.parent) {
 						var strippedParentName = data.parent.replace(/\s/g, '');
@@ -81,9 +99,10 @@ define(['jquery', 'Leaflet', 'LeafletDraw', 'LeafletMiniMap'], function($, L) {
 		
 		this.initMap = function() {
 			// Initialize leaflet map
-			this.map = L.map('map', { center: [-73, 294], zoom: 3, attributionControl: false });
+			self.map = L.map('map', { center: [-73, 294], zoom: 3, attributionControl: false });
+			window.lmap = self.map;
 			
-			this.switchMap( dataService.currentMap() );
+			self.switchMap( dataService.currentMap() );
 
 			// Add zoom out button
 			var ViewAllControl = L.Control.extend({

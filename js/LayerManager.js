@@ -5,6 +5,7 @@ define(['lodash'], function(_) {
 	function LayerManager(dataService, mapManager) {
 		var self = this;
 		var polyState = {},
+			enabledLayers = [],
 			layerColors = {},
 			selectedPoly = null,
 			selectedData = null,
@@ -47,6 +48,18 @@ define(['lodash'], function(_) {
 			});
 		};
 		
+		this.mostRecentlyEnabled = function() {
+			return enabledLayers.length ? enabledLayers[enabledLayers.length-1] : null;
+		};
+		
+		this.selectedData = function() {
+			return selectedData;
+		};
+		
+		this.selectedPoly = function() {
+			return selectedPoly;
+		};
+		
 		/* Add a new layer to the map.
 		 * Updates the database and the layer menu
 		 */
@@ -67,7 +80,13 @@ define(['lodash'], function(_) {
 			}
 
 			// TODO generalize for any account
-			fb.child('vpc/layers').push({name: name, id: id, color: color, parent: parent});
+			dataService.fb.child('layers').push({
+				name: name, 
+				id: id, 
+				color: color,
+				parent: parent,
+				createdBy: dataService.auth.getUser().uid
+			});
 			$('#new-layer').modal('hide');
 		};
 
@@ -102,7 +121,7 @@ define(['lodash'], function(_) {
 			self.updateAutocomplete();
 		};
 		
-		this.enableLayer = function(type, color) {
+		this.enableLayer = function(type, color, selectedFeatureId) {
 			if (color) {
 				layerColors[type] = color;
 			} else {
@@ -111,7 +130,12 @@ define(['lodash'], function(_) {
 			
 			// If the layer is not visible, create it
 			polyState[type] = [];
-			dataService.getFeaturesForLayer(type, function(feature) {
+			enabledLayers.push(type);
+			dataService.getFeaturesForLayer(type, function(feature, otherGeometries) {
+				// Detect whether this layer was disabled since this function
+				// was called. This should rarely happen because callbacks are canceled.
+				if (!polyState[type]) return;
+				
 				if (feature.properties.type == type && feature.geometry) {
 					var points = dataService.geoJSONToLeaflet(feature.geometry.coordinates[0]);
 					var newPoly = L.polygon(points, {color: color, weight: 2});
@@ -122,13 +146,30 @@ define(['lodash'], function(_) {
 						if (feature.properties.link) {
 							content = '<a href="' + feature.properties.link + '" target="blank_">' + content + '</a>';
 						}
-						if (dataService.auth.getUser()) {
-							content += '<br /><a class="clone" href="#">Clone</a> <a class="delete" href="#">Delete</a>';
+						var numGeometries = Object.keys(otherGeometries).length;
+						if (numGeometries > 0) {
+							content += '<details><summary>This feature appears on '+numGeometries+' other '+(numGeometries === 1 ? 'map' : 'maps')+'</summary>';
+							Object.keys(otherGeometries).sort(function(a, b) {
+								// Sort by year
+								return mapManager.getMap(a).year - mapManager.getMap(b).year;
+							}).forEach(function(geomKey) {
+								content += '<a class="show_other_map" data-map-id="'+geomKey+'">'+mapManager.mapLabel(geomKey)+'</a>';
+							});
+							content += '</details>';
+						} else {
+							content += '<br />';
 						}
-						L.popup().setLatLng(feature.properties.center).setContent(content).openOn(mapManager.map);
+						if (dataService.auth.getUser()) {
+							content += '<a class="clone" href="#">Clone</a> <a class="delete" href="#">Delete</a>';
+						}
+						L.popup({}, newPoly).setLatLng(newPoly.getBounds().getCenter()).setContent(content).openOn(mapManager.map);
 						selectedPoly = newPoly;
 						selectedData = feature;
 					});
+
+					if (selectedFeatureId === feature.id) {
+						newPoly.fire('click');
+					}
 
 					// Double clicking a polygon will center the landmark
 					// XXX Doesn't work?
@@ -148,21 +189,27 @@ define(['lodash'], function(_) {
 		};
 		
 		this.disableLayer = function(type) {
+			// Cancel pending requests for this layer's geometry
+			dataService.cancelGeometryRequests(type);
+			
 			// If the layer is visible, remove it
 			for (var i = 0; i < polyState[type].length; ++i) {
 				mapManager.map.removeLayer(polyState[type][i]);
 				delete activeLandmarksObj[ polyState[type][i].featureId ];
 			}
-
+			
+			enabledLayers.splice(enabledLayers.indexOf(type), 1);
+			
 			$('#'+type+'-layer').css('font-weight', 400);
 
 			delete polyState[type];
 		};
 		
-		this.reload = function() {
+		this.reload = function(map, selectedFeatureId) {
+			dataService.cancelGeometryRequests();
 			Object.keys(polyState).forEach(function(layerName) {
 				self.disableLayer(layerName);
-				self.enableLayer(layerName);
+				self.enableLayer(layerName, undefined, selectedFeatureId);
 			});
 		};
 		
