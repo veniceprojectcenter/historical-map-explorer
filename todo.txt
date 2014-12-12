@@ -1,2 +1,3 @@
-- Edit feature creation to handle maps, make sure to populate <feature>.propreties.maps
-- Map creation
+- Feature editing UI
+- Edit maps
+- Edit layers
