@@ -51,7 +51,9 @@
 			<span id="loggedin-text">Logged in as <span id="loggedin-username"></span>. <a id="logout-link" href="#">Logout</a></span>
 			<div id="login-form" class="login-form">
 				<input id="email" class="login-input form-control" placeholder="Email" /><br />
-				<input id="password" class="login-input form-control" type="password" placeholder="Password" />
+				<input id="password" class="login-input form-control" type="password" placeholder="Password" /><br />
+				<button id="login-submit">Login</button>
+				<button id="login-cancel">Cancel</button>
 			</div>
 		</div>
 	</div>
@@ -182,6 +184,27 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button id="clone-button" type="button" class="btn btn-primary">Clone</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	<!-- Modal to edit feature -->
+	<div id="edit-layer" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Edit Feature</h4>
+				</div>
+				<div class="modal-body" id="edit-feature">
+					<label for="edit-feature-name">Name: </label><input id="edit-feature-name" class="form-control" placeholder="Name of this landmark"><br />
+					<label for="edit-feature-type">Type: </label><select id="edit-feature-type" class="form-control layers-select"></select><br />
+					<label for="edit-feature-link">Link: </label><input id="edit-feature-link" class="form-control" placeholder="A link to more information (such as a Venipedia page)">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button id="update-button" type="button" class="btn btn-primary">Update</button>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

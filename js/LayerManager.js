@@ -101,10 +101,64 @@ define(['lodash'], function(_) {
 		this.clonePoly = function () {
 			var newData = $.extend(true, {}, selectedData); // clone the data
 			newData.properties.type = $('#clone-layer-type').val();
-			fb.child('vpc/features').push(newData);
+			
+			// dataService.fb.child('vpc/features').push(newData);
+			var newRef = dataService.fb.child('features').push();
+			console.log("Nuova Chiave", newRef.key(), newData);
+			newRef.set(newData, function(error){
+			  console.log("Errore", error);
+			  alert("Aggiunto Elemento " + newRef.key());
+			});
 
 			$('#clone-layer').modal('hide');
 			mapManager.map.closePopup();
+		};
+		
+		/* Shows the edit modal
+		 */
+		this.editModal = function () {
+		  console.log("selectedData", selectedData);
+		  
+		  $('#edit-feature-name').val(selectedData.properties.name);
+		  $('#edit-feature-type').val(selectedData.properties.type);
+		  $('#edit-feature-link').val(selectedData.properties.link);
+		  
+			$('#edit-layer').modal('show');
+			
+			// var name = $('#new-layer-name').val();
+			// var id = $('#new-layer-id').val();
+			// var color = $('#new-layer-color').val();
+			// var parent = $('#new-layer-parent').val();
+      // 
+			// if (parent === "Other") {
+			// 	parent = $('#new-layer-new-parent').val();
+			// }
+		};
+
+		/* Clones the feature to a new layer
+		 */
+		this.editFeature = function () {
+		  // console.log(
+		  //   "ID  ", selectedData.id,
+		  //   'name', $('#edit-feature-name').val(),
+		  //   'link', $('#edit-feature-type').val(),
+		  //   'type', $('#edit-feature-link').val()
+		  // );
+		  selectedData.properties.name = $('#edit-feature-name').val();
+		  selectedData.properties.type = $('#edit-feature-type').val();
+		  selectedData.properties.link = $('#edit-feature-link').val();
+		  dataService.fb.child('features').child(selectedData.id).child('properties').update({
+		    name: $('#edit-feature-name').val(),
+		    type: $('#edit-feature-type').val(),
+		    link: $('#edit-feature-link').val()
+		  }, function(error){
+		    if (error) return alert("Error: " + error);
+		    $('#edit-layer').modal('hide');
+		    dataService.updateItem(selectedData);
+    		myDisableLayer($('#edit-feature-type').val());
+    		myEnableLayer($('#edit-feature-type').val());
+		    mapManager.map.closePopup();
+		  });
 		};
 		
 		/* Turns a overlay layer on or off.
@@ -112,6 +166,7 @@ define(['lodash'], function(_) {
 		 * appear in the search.
 		 */
 		this.toggleLayer = function (type, color) {
+		  console.log("Abilito", type);
 			if (!polyState[type]) {
 				self.enableLayer(type, color);
 			} else {
@@ -166,7 +221,7 @@ define(['lodash'], function(_) {
 							content += '<br />';
 						}
 						if (dataService.auth.getUser()) {
-							content += '<a class="clone" href="#">Clone</a> <a class="delete" href="#">Delete</a>';
+							content += '<a class="edit" href="#">Edit</a> <a class="clone" href="#">Clone</a> <a class="delete" href="#">Delete</a>';
 						}
 						L.popup({}, newPoly).setLatLng(newPoly.getBounds().getCenter()).setContent(content).openOn(mapManager.map);
 						selectedPoly = newPoly;
@@ -210,6 +265,8 @@ define(['lodash'], function(_) {
 
 			delete polyState[type];
 		};
+		var myEnableLayer  = self.enableLayer;
+		var myDisableLayer = self.disableLayer;
 		
 		this.reload = function(map, selectedFeatureId) {
 			dataService.cancelGeometryRequests();

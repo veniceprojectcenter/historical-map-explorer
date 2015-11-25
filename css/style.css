@@ -94,7 +94,7 @@ html, body
 .popup {
 	font-size: large;
 }
-.clone, .delete {
+.edit, .clone, .delete {
 	font-size:x-small;
 }
 .org-logo {

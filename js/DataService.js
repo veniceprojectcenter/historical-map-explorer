@@ -45,6 +45,19 @@ define(['Firebase', 'lodash'], function(Firebase, _) {
 			dataById[item.id] = item;
 		};
 		
+		this.updateItem = function(item){
+		  // console.log("Data", data);
+		  var i = data.findIndex(function(d) {
+  			return d.id === item.id;
+  		});
+  		// console.log("Indice", i, data[i]);
+  		data[i]['properties'].name = item.properties.name;
+  		data[i]['properties'].type = item.properties.type;
+  		data[i]['properties'].link = item.properties.link;
+  		dataById[item.id] = data[i];
+		};
+		
+		
 		this.featureById = function(id) {
 			return dataById[id];
 		};

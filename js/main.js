@@ -98,13 +98,18 @@ define(['jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataS
 			//Uncomment this when it's needed:
 			//callback = fbAuth.signup;
 		}
-	
+	  
+	  function doLogin(){
+	    console.log("Login attempt started");
+			callback($('#email').val(), $('#password').val());
+	  }
 		$('#password').on('keyup', function(e) {
-			if (e.keyCode === 13) {
-				console.log("Login attempt started");
-				callback($('#email').val(), $('#password').val());
-				//$('#password').off('keyup');
-			}
+			if (e.keyCode === 13) doLogin();
+		});
+		$('#login-submit').on('click', doLogin);
+		$('#login-cancel').on('click', function(e){
+		  $('#login-form').css('display', 'none');
+  		$('#login-text').show();
 		});
 	
 		$('#login-form').css('display', 'block');
@@ -162,6 +167,7 @@ define(['jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataS
 		});
 
 		$('#clone-button').click(layerManager.clonePoly);
+		$('#update-button').click(layerManager.editFeature);
 		
 		$('#map').on('click', '.clone', function() {
 			layerManager.cloneModal();
@@ -171,7 +177,9 @@ define(['jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataS
 			var selectedData = layerManager.selectedData();
 			mapManager.map.closePopup();
 			mapManager.switchMap($(this).attr('data-map-id'), selectedData.id);
-		});
+		}).on('click', '.edit', function() {
+  		layerManager.editModal();
+  	});
 
 		$('#plus-sign').click(function () {
 			$('#info-modal').modal('show');
