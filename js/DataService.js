@@ -57,6 +57,17 @@ define(['Firebase', 'lodash'], function(Firebase, _) {
   		dataById[item.id] = data[i];
 		};
 		
+		this.deleteItem = function(item){
+		  // console.log("Data", data);
+		  var i = data.findIndex(function(d) {
+  			return d.id === item.id;
+  		});
+  		// console.log("Indice", i, data[i]);
+  		// delete data[i];
+  		// delete dataById[item.id];
+  		data[i]['properties'].type = 'nonenone';
+  		dataById[item.id] = data[i];
+		};
 		
 		this.featureById = function(id) {
 			return dataById[id];

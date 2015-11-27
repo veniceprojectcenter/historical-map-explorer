@@ -162,6 +162,21 @@ define(['lodash'], function(_) {
 		  });
 		};
 		
+		this.deletePoly = function(){
+		  if (!confirm("DELETE feature " + selectedData.id)) return;
+		  
+		  var cur_type = selectedData.properties.type;
+		  
+		  dataService.deleteItem(selectedData);
+  		
+  		console.log("dd", dataService.currentMap(), selectedData.id);
+		  dataService.fb.child('features').child(selectedData.id).remove();
+		  dataService.fb.child('geometries').child(dataService.currentMap()).child(selectedData.id).remove();
+		  
+		  myDisableLayer(cur_type);
+  		myEnableLayer(cur_type);
+		}
+		
 		/* Turns a overlay layer on or off.
 		 * When layers are enabled, only the enalbed layers' features
 		 * appear in the search.
