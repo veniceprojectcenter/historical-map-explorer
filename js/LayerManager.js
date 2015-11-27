@@ -119,6 +119,7 @@ define(['lodash'], function(_) {
 		this.editModal = function () {
 		  console.log("selectedData", selectedData);
 		  
+		  $('#edit-feature-id'  ).html(selectedData.id            );
 		  $('#edit-feature-name').val(selectedData.properties.name);
 		  $('#edit-feature-type').val(selectedData.properties.type);
 		  $('#edit-feature-link').val(selectedData.properties.link);
