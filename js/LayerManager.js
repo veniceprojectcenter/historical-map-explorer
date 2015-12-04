@@ -2,7 +2,7 @@ define(['lodash'], function(_) {
 	"use strict";
 	
 	// Handle things related to the overlays
-	function LayerManager(dataService, mapManager) {
+	function LayerManager(dataService, mapManager, defaultEnabledLayer) {
 		var self = this;
 		var polyState = {},
 			enabledLayers = [],
@@ -44,6 +44,12 @@ define(['lodash'], function(_) {
 			
 					$('#' + data.id + '-layer').click(self.toggleLayer.bind(this, data.id, data.color));
 					$('.layers-select').append('<option value="'+data.id+'">'+data.name+'</option>');
+					
+					if (defaultEnabledLayer && data.id == defaultEnabledLayer) {
+					  console.log("Imposto colore Layer ", data.id, data.color);
+					  layerColors[data.id] = data.color;
+					  defaultEnabledLayer = undefined;
+      		}
 				});
 			});
 		};
@@ -246,6 +252,7 @@ define(['lodash'], function(_) {
 
 					if (selectedFeatureId === feature.id) {
 						newPoly.fire('click');
+						mapManager.map.setView(feature.properties.center).setZoom(5);
 					}
 
 					// Double clicking a polygon will center the landmark
@@ -287,6 +294,7 @@ define(['lodash'], function(_) {
 		this.reload = function(map, selectedFeatureId) {
 			dataService.cancelGeometryRequests();
 			Object.keys(polyState).forEach(function(layerName) {
+			  
 				self.disableLayer(layerName);
 				self.enableLayer(layerName, undefined, selectedFeatureId);
 			});

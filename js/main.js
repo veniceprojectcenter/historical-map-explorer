@@ -35,8 +35,8 @@ String.naturalCompare = function(a, b) {
 	return 0;
 };
 
-define(['jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataService', 'LayerManager', 'MapManager', 'Downloader', 'jquery-ui', 'bootstrap'], 
-		function($, Firebase, FirebaseAuth, RectDrawer, PolyDrawer, DataService, LayerManager, MapManager, Downloader) {
+define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataService', 'LayerManager', 'MapManager', 'Downloader', 'jquery-ui', 'bootstrap'], 
+		function($, UrlMap, Firebase, FirebaseAuth, RectDrawer, PolyDrawer, DataService, LayerManager, MapManager, Downloader) {
 	"use strict";
 	
 	/// CONSTANTS
@@ -48,10 +48,33 @@ define(['jquery', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataS
 	var fbAuth = new FirebaseAuth(fb);
 	
 	/// CORE FUNCTIONALITY
-	var dataService = new DataService(fb, fbAuth, DEFAULT_MAP);
+	var urlMap = new UrlMap();
+	var dataService = new DataService(fb, fbAuth, urlMap.map); //.DEFAULT_MAP);
 	var mapManager = new MapManager(dataService);
-	var layerManager = new LayerManager(dataService, mapManager);
-	mapManager.onSwitch(layerManager.reload.bind(layerManager));
+	var layerManager = new LayerManager(dataService, mapManager, urlMap.layer);
+	mapManager.onSwitch(function(){
+	  layerManager.reload();
+	  if (urlMap.layer) {
+		  setTimeout(function(){
+  		  console.log("Abilito Layer " + urlMap.layer);
+  		  // self.disableLayer(pleaseEnable);
+				// self.enableLayer(defaultEnabledLayer, undefined, selectedFeatureId);
+				if (urlMap.feature) {
+				  console.log("Cerco feature", urlMap.feature);
+				  fb.child('features').once('value', function (snapshot) {
+				    snapshot.forEach(function(childSnapshot) {
+				      if (childSnapshot.child('properties').child('name').val() == urlMap.feature) {
+				        console.log("Trovata feature", childSnapshot.val());
+				        layerManager.enableLayer(urlMap.layer, undefined, childSnapshot.key());
+				        return;
+				      }
+				    });
+				  });
+				} else
+				  layerManager.enableLayer(urlMap.layer);
+  		}, 1250);
+		}
+	});
 
 	/// EXTRA FUNCTIONALITY
 	var downloader = new Downloader();

@@ -21,10 +21,15 @@ define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 		};
 		
 		this.switchMap = function(newMapId, selectedFeatureId) {
+		  console.log("switch to " + newMapId);
 			dataService.removeGeometries();
 			
 			dataService.fb.child('maps').child(newMapId).once('value', function(mapSnap) {
 				var mapData = mapSnap.val();
+				if (!mapData) {
+				  alert("Cannot find map <" + newMapId + ">, chooose anothe one.");
+				  return ;
+				}
 				var tileUrl = mapData.tiles;
 				
 				if (mainLayer) self.map.removeLayer(mainLayer);
