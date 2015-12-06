@@ -108,7 +108,16 @@ define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
 				dataService.fb.child('features')
 					.child(featureId)
 					.child('properties/maps')
-					.set(feature.properties.maps);
+					.set(feature.properties.maps, function(error){
+					  if (error) return alert("Error: " + error);
+    		    dataService.updateItem(feature);
+    		    try {
+        		  layerManager.disableLayer($('#feature-filter').val());
+        		} catch(err) {
+        		  
+        		};
+        		layerManager.enableLayer($('#feature-filter').val());
+					});
 			} else if (feature) {
 				// XXX fix name
 				if (!name) return;
@@ -116,8 +125,22 @@ define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
 				geometry = polyLayer.toGeoJSON().geometry;
 				feature.properties.type = type;
 				feature.properties.link = link;
-				dataService.fb.child('features').child(feature.id).set(feature);
-				dataService.fb.child('geometries').child(dataService.currentMap()).child(feature.id).set(geometry);
+				dataService.fb.child('features')
+				  .child(feature.id)
+				  .set(feature);
+				dataService.fb.child('geometries')
+				  .child(dataService.currentMap())
+				  .child(feature.id)
+				  .set(geometry, function(error){
+					  if (error) return alert("Error: " + error);
+    		    dataService.updateItem(feature);
+    		    try {
+        		  layerManager.disableLayer(type);
+        		} catch(err) {
+        		  
+        		};
+        		layerManager.enableLayer(type);
+					});
 			} else {
 				// XXX fix name
 				if (!name) return;
@@ -136,8 +159,23 @@ define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
 					}
 				};
 				geometry = polyLayer.toGeoJSON().geometry;
-				dataService.fb.child('features').push(newFeature).once('value', function(featureSnap) {
-					dataService.fb.child('geometries').child(dataService.currentMap()).child(featureSnap.key()).set(geometry);
+				dataService.fb.child('features')
+				  .push(newFeature)
+				  .once('value', function(featureSnap) {
+					dataService.fb.child('geometries')
+					  .child(dataService.currentMap())
+					  .child(featureSnap.key()).set(geometry, function(error){
+  					  if (error) return alert("Error: " + error);
+  					  newFeature.id = featureSnap.key();
+  					  dataService.push(newFeature);
+      		    dataService.updateItem(newFeature);
+          		try {
+          		  layerManager.disableLayer(type);
+          		} catch(err) {
+          		  
+          		};
+          		layerManager.enableLayer(type);
+  					});
 				});
 			}
 	
