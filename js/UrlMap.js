@@ -26,7 +26,7 @@ define([], function() {
     urlMapEl.parseParameters = function(){
       if (urlMapEl.feature) {
         console.log("Switch to feature " + urlMapEl.feature);
-        if (!urlMapEl.layer) urlMapEl.layer = 'Islands';
+        if (!urlMapEl.layer) urlMapEl.layer = 'island';
         if (!urlMapEl.map  ) urlMapEl.map   = DEFAULT_MAP; //'debarbari-map';
     
       } else if (urlMapEl.layer) {
