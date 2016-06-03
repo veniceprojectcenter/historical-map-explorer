@@ -1,3 +1,8 @@
 - Feature editing UI
 - Edit maps
 - Edit layers
+
+https://developers.facebook.com/tools/debug/
+http://www.html.it/articoli/integrare-facebook-nel-proprio-sito-web-5/
+http://www.html.it/articoli/facebook-open-graph-meta-dato-ogtype/
+https://developers.facebook.com/docs/reference/opengraph/object-type/place/
