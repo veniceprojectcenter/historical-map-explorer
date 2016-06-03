@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <title>Venetian Historical Map Explorer</title>
   
-  <script data-main="js/init" src="js/lib/require.js"></script>
+  <script data-main="js/cartography-init" src="js/lib/require.js"></script>
   
   <!-- Library CSS -->
   <link rel="stylesheet" href="css/lib/leaflet.css" />
@@ -36,17 +36,16 @@
   <div id="map"></div>
   
   <!-- Top toolbar -->
-  <div class="header" id="mini-header">
+  <div id="mini-header" class="header my-include" src="/partials/toolbar.html">...</div>
+  <!-- div class="header" id="mini-header">
     <input class="search form-control" id="mini-search" placeholder="Search..." />
     <div class="btn-group">
       <div id="map-dropdown" class="btn-group">
         <button id="maps" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-target="#map-dropdown" title="Select a map"><img class="icon" src="img/maps.png" /></button>
-        <!-- Note: Keep the following ul tag empty for CSS purposes (this includes whitespace) -->
         <ul class="dropdown-menu loading maps-menu" role="menu"></ul>
       </div>
       <div id="layer-dropdown" class="btn-group">
         <button id="layers" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-target="#layer-dropdown" title="Enable and disable layers"><img class="icon" src="img/layers.png" /></button>
-        <!-- Note: Keep the following ul tag empty for CSS purposes (this includes whitespace) -->
         <ul class="dropdown-menu loading layers-menu" role="menu"></ul>
       </div>
     </div>
@@ -56,7 +55,7 @@
       <button id="select" class="btn btn-default" data-toggle="tooltip" title="Download a selection"><img class="icon" src="img/select.png" /></button>
       <button id="plus-sign" class="btn btn-default" data-toggle="tooltip" title="Get more information"><img class="icon" src="img/about.png" /></button>
     </div>
-  </div>
+  </div -->
   
   <!-- Login Pane -->
   <div class="login panel panel-default">
