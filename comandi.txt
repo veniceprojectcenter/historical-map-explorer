@@ -1,1 +1,5 @@
 rsync -avz -e ssh venicep2@ftp.veniceprojectcenter.org:/home3/venicep2/public_html/cartography_vpc/maps /Users/minni/git_app/vpc/cartography_vpc_20160603/
+
+diff -ur historical-map-explorer cartography_vpc_20160603 > historical-map-explorer/server.diff
+
+

@@ -41,7 +41,7 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
 	
 	/// CONSTANTS
 	var DEFAULT_MAP = 'debarbari';
-	var FIREBASE_URL = 'https://vpc.firebaseio.com/cartography';
+	var FIREBASE_URL = 'https://placeconsole.firebaseio.com/cartography';
 	
 	/// EXTERNAL LIBRARIES
 	var fb = new Firebase(FIREBASE_URL);
