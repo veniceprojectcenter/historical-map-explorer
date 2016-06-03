@@ -2,4 +2,6 @@ rsync -avz -e ssh venicep2@ftp.veniceprojectcenter.org:/home3/venicep2/public_ht
 
 diff -ur historical-map-explorer cartography_vpc_20160603 > historical-map-explorer/server.diff
 
-
+py -m http.server
+python -m SimpleHTTPServer
+http://LOCALHOST:8000

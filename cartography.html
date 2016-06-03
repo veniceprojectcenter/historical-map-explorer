@@ -4,23 +4,23 @@
   <!-- Want more information about the code? Contact justin.chines@gmail.com -->
   <meta charset="utf-8">
   <title>Venetian Historical Map Explorer</title>
-  
+
   <script data-main="js/cartography-init" src="js/lib/require.js"></script>
-  
+
   <!-- Library CSS -->
   <link rel="stylesheet" href="css/lib/leaflet.css" />
   <link rel="stylesheet" href="css/lib/leaflet.draw.css" />
   <link rel="stylesheet" href="css/lib/jquery-ui.css" />
   <link rel="stylesheet" href="css/lib/bootstrap.min.css" />
   <link rel="stylesheet" href="css/lib/Control.MiniMap.css" />
-  
+
   <!-- google material fonts e materializeCSS -->
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- link type="text/css" rel="stylesheet" href="css/lib/materialize.min.css"  media="screen,projection"/ -->
-  
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/cartography.css" />
-  
+
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -34,7 +34,7 @@
 <body>
   <!-- Map Container -->
   <div id="map"></div>
-  
+
   <!-- Top toolbar -->
   <div id="mini-header" class="header my-include" src="/partials/toolbar.html">...</div>
   <!-- div class="header" id="mini-header">
@@ -56,9 +56,10 @@
       <button id="plus-sign" class="btn btn-default" data-toggle="tooltip" title="Get more information"><img class="icon" src="img/about.png" /></button>
     </div>
   </div -->
-  
+
   <!-- Login Pane -->
-  <div class="login panel panel-default">
+  <div class="login panel panel-default my-include" src="/partials/login.htlm">...</div>
+  <!--
     <div class="panel-body">
       <span id="login-text"><a id="login-link" href="#">Login</a> / <a id="signup-link" href="#">Sign up</a></span>
       <span id="loggedin-text">Logged in as <span id="loggedin-username"></span>. <a id="logout-link" href="#">Logout</a></span>
@@ -70,10 +71,10 @@
       </div>
     </div>
   </div>
-  
+-->
   <!-- Info modal, shows info about the currently visible map -->
-  <div id="info-modal" class="modal fade" id="header">
-    <div class="modal-dialog">
+  <div id="info-modal" class="modal fade my-include" src="/partials/modal_info.html" id="header">...</div>
+  <!--  <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -81,16 +82,17 @@
         </div>
         <div class="modal-body">
           <!-- <iframe style="border: none; width: 100%; height: 500px;" src="https://docs.google.com/document/d/1UKpaE8840syznkKYdn86LZPocZ53mdzL0Gn7Onp5rVM/pub?embedded=true"></iframe> -->
-        </div>
+    <!--     </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Okay!</button>
         </div>
       </div>
     </div>
-  </div>
-  
+  -->
+
   <!-- Modal to add a new geographical feature -->
-  <div id="new-feature" class="modal fade">
+  <div id="new-feature" class="modal fade my-include" src="/partials/modal_new_feature.html">...</div>
+  <!--
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -100,13 +102,13 @@
         <div class="modal-body">
           <div role="tabpanel">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
+      <!--      <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#create-coordinates" aria-controls="create-coordinates" role="tab" data-toggle="tab">Existing Feature</a></li>
               <li role="presentation"><a href="#create-feature" aria-controls="create-feature" role="tab" data-toggle="tab">New Feature</a></li>
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content">
+  <!--          <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="create-coordinates">
                 <label for="feature-filter">Type: </label><select id="feature-filter" class="form-control layers-select"></select>
                 <label for="old-feature">Feature: </label><select id="old-feature" class="form-control features-select"></select>
@@ -128,12 +130,11 @@
           <button id="new-feature-submit" type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  
+  <!--  </div><!-- /.modal-dialog -->
+  <!-- </div><!-- /.modal -->
   <!-- Modal to add a new map -->
-  <div id="new-map" class="modal fade">
-    <div class="modal-dialog">
+  <div id="new-map" class="modal fade my-include" src="/partials/modal_new_map.html">...</div>
+<!--    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -153,12 +154,12 @@
           <button id="new-map-button" type="button" class="btn btn-primary">Create</button>
         </div>
       </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  
+<!--    </div><!-- /.modal-dialog -->
+  <!--</div><!-- /.modal -->
+
   <!-- Modal to add a new layer of geographical features  -->
-  <div id="new-layer" class="modal fade">
-    <div class="modal-dialog">
+  <div id="new-layer" class="modal fade my-include" src="/partials/modal_new_layer.html">...</div>
+  <!--  <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -180,12 +181,12 @@
           <button id="new-layer-button" type="button" class="btn btn-primary">Create</button>
         </div>
       </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  
+  <!--  </div><!-- /.modal-dialog -->
+  <!-- </div><!-- /.modal -->
+
   <!-- Modal to clone feature to another layer -->
-  <div id="clone-layer" class="modal fade">
-    <div class="modal-dialog">
+  <div id="clone-layer" class="modal fade my-include"src="/partials/modal_clone_feature.html">...</div>
+  <!--  <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -199,12 +200,12 @@
           <button id="clone-button" type="button" class="btn btn-primary">Clone</button>
         </div>
       </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  
+  <!--  </div><!-- /.modal-dialog -->
+<!--  </div><!-- /.modal -->
+
   <!-- Modal to edit feature -->
-  <div id="edit-layer" class="modal fade">
-    <div class="modal-dialog">
+  <div id="edit-layer" class="modal fade my-include" src="/partials/modal_edit_feature.html">...</div>
+  <!--  <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -220,8 +221,8 @@
           <button id="update-button" type="button" class="btn btn-primary">Update</button>
         </div>
       </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+<!--    </div><!-- /.modal-dialog -->
+  <!-- </div><!-- /.modal -->
 </body>
 <!--Tiles generated by MapTiler/GDAL2Tiles, Copyright © 2008 Klokan Petr Pridal, GDAL & OSGeo GSoC-->
 </html>

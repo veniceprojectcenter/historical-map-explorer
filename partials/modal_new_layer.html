@@ -1,0 +1,23 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">Create a new layer</h4>
+    </div>
+    <div class="modal-body">
+      <label for="new-layer-name">Name: </label><input id="new-layer-name" class="form-control" placeholder="Name that will appear in the layers list (eg. Demolished Churches)">
+      <br />
+      <label for="new-layer-id">ID: </label><input id="new-layer-id" class="form-control" placeholder="Short name to be used internally (eg. demolished-church)">
+      <br />
+      <label for="new-layer-color">Color: </label><input id="new-layer-color" class="form-control" placeholder="HTML Color (eg. #c0c0c0 or silver)">
+      <br />
+      <label for="new-layer-parent">Parent: </label><select id="new-layer-parent" class="form-control"><option selected="selected" value="">None</option><option id="new-layer-parent-other" value="Other">Other (Enter below)</option></select>
+      <br />
+      <label for="new-layer-new-parent">Other: </label><input id="new-layer-new-parent" class="form-control" placeholder="Name for layer parent when not in list">
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <button id="new-layer-button" type="button" class="btn btn-primary">Create</button>
+    </div>
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
