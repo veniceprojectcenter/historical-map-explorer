@@ -176,3 +176,6 @@ div.header.my-include > div.btn-group{
     display: table-caption;
     /* vertical-align: inherit; */
 }
+div.btn.no-radius-border{
+border-radius: initial; 
+}
