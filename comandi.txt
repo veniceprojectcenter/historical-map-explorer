@@ -2,6 +2,18 @@ rsync -avz -e ssh venicep2@ftp.veniceprojectcenter.org:/home3/venicep2/public_ht
 
 diff -ur historical-map-explorer cartography_vpc_20160603 > historical-map-explorer/server.diff
 
+cd hi+tab
+
 py -m http.server
 python -m SimpleHTTPServer
 http://LOCALHOST:8000
+
+git chedckout -b mg
+
+git checkout mg
+git status
+git add .
+git add FILENAME
+git commit -m "PERCHE"
+....git pull
+git push
