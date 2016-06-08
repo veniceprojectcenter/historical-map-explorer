@@ -8,7 +8,9 @@ py -m http.server
 python -m SimpleHTTPServer
 http://LOCALHOST:8000
 
-git chedckout -b mg
+git
+
+git checkout -b mg
 
 git checkout mg
 git status
@@ -17,3 +19,30 @@ git add FILENAME
 git commit -m "PERCHE"
 ....git pull
 git push
+90  git status
+91  cd historical-map-explorer
+92  git stusa
+93  git status
+94  git pull
+95  git config --global push.default current
+96  git pull
+97  git status
+98  git pull origin mg
+99  git checkout css/cartography.css
+100  git status
+101  git checkout css/cartography.css
+102  git status
+103  git reset HEAD
+104  git status
+105  git checkout css/cartography.css
+106  git status
+107  git pull origin mg
+108  git checkout cartography.html
+109  git status
+110  git checkout cartography.html
+111  git pull origin mg
+112  git status
+113  git add .
+114  git commit -m "comandi"
+115  git push
+116  history

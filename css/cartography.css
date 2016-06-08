@@ -47,7 +47,7 @@ html, body
 {
   position: fixed;
   top: 10px;
-  left: 50px;
+  left: 8px;
   right: 10px;
 }
 .gap
@@ -169,4 +169,10 @@ div.leaflet-top.leaflet-left > div.leaflet-control-zoom.leaflet-bar.leaflet-cont
 }
 div.leaflet-top.leaflet-left > div.leaflet-bar.leaflet-control{
   display:none;
+}
+
+div.header.my-include > div.btn-group{
+  position: initial;
+    display: table-caption;
+    /* vertical-align: inherit; */
 }
