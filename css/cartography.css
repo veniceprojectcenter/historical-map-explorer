@@ -177,5 +177,5 @@ div.header.my-include > div.btn-group{
     /* vertical-align: inherit; */
 }
 div.btn.no-radius-border{
-border-radius: initial; 
+border-radius: 0px; 
 }
