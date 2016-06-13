@@ -176,6 +176,19 @@ div.header.my-include > div.btn-group{
     display: table-caption;
     /* vertical-align: inherit; */
 }
-div.btn.no-radius-border{
-border-radius: 0px; 
+.no-radius-border{
+border-radius: 0px;
+}
+div.login.panel.panel-default.my-include.inclueded{
+  border-radius: 50px;
+}
+.leaflet-control-minimap a {
+border-radius: 2px 10px 2px 2px;
+left:0;
+right: initial;
+}
+.leaflet-popup-content p.map_not_linked{
+  margin: 0px;
+  margin-left: 12px;
+
 }
