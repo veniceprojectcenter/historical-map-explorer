@@ -207,9 +207,11 @@ border-radius: 0px 0px 10px 10px;
 div.header.my-include.inclueded > input.search.form-control.ui-autocomplete-input{
 margin-left:-1px;
 border-radius: 10px 10px 10px 0px;
+font-weight: bold;
 }
 div.login.panel.panel-default.my-include.inclueded > div.panel-body{
   padding: 10px;
+  font-size: 12px;
 
 }
 .login-form{
