@@ -190,5 +190,21 @@ right: initial;
 .leaflet-popup-content p.map_not_linked{
   margin: 0px;
   margin-left: 12px;
+}
+div.btn.btn-default.dropdown-toggle.no-radius-border{
+margin-left: 0px;
+}
 
+.btn-group>.btn:first-child {
+margin-left: -1px;
+}
+
+div.btn-group > button.btn.btn-default.dropdown-toggle.no-radius-border.position-left-layer{
+margin-left:0px;
+border-radius: 0px 0px 10px 10px;
+}
+
+div.header.my-include.inclueded > input.search.form-control.ui-autocomplete-input{
+margin-left:-1px;
+border-radius: 10px 10px 10px 0px;
 }
