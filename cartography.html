@@ -37,192 +37,31 @@
 
   <!-- Top toolbar -->
   <div id="mini-header" class="header my-include" src="/partials/toolbar.html">...</div>
-  <!-- div class="header" id="mini-header">
-    <input class="search form-control" id="mini-search" placeholder="Search..." />
-    <div class="btn-group">
-      <div id="map-dropdown" class="btn-group">
-        <button id="maps" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-target="#map-dropdown" title="Select a map"><img class="icon" src="img/maps.png" /></button>
-        <ul class="dropdown-menu loading maps-menu" role="menu"></ul>
-      </div>
-      <div id="layer-dropdown" class="btn-group">
-        <button id="layers" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-target="#layer-dropdown" title="Enable and disable layers"><img class="icon" src="img/layers.png" /></button>
-        <ul class="dropdown-menu loading layers-menu" role="menu"></ul>
-      </div>
-    </div>
-    <div class="btn-group">
-      <button id="drawmode" class="btn btn-default" data-toggle="tooltip" title="Draw a new polygon"><img class="icon" src="img/pencil.png" /></button>
-      <button id="dlbutton" class="btn btn-default" data-toggle="tooltip" title="Download what is currently visible"><img class="icon" src="img/filesave.png" /></button>
-      <button id="select" class="btn btn-default" data-toggle="tooltip" title="Download a selection"><img class="icon" src="img/select.png" /></button>
-      <button id="plus-sign" class="btn btn-default" data-toggle="tooltip" title="Get more information"><img class="icon" src="img/about.png" /></button>
-    </div>
-  </div -->
 
   <!-- Login Pane -->
   <div class="login panel panel-default my-include" src="/partials/login.html">...</div>
-  <!--
-    <div class="panel-body">
-      <span id="login-text"><a id="login-link" href="#">Login</a> / <a id="signup-link" href="#">Sign up</a></span>
-      <span id="loggedin-text">Logged in as <span id="loggedin-username"></span>. <a id="logout-link" href="#">Logout</a></span>
-      <div id="login-form" class="login-form">
-        <input id="email" class="login-input form-control" placeholder="Email" /><br />
-        <input id="password" class="login-input form-control" type="password" placeholder="Password" /><br />
-        <button id="login-submit">Login</button>
-        <button id="login-cancel">Cancel</button>
-      </div>
-    </div>
-  </div>
--->
+
   <!-- Info modal, shows info about the currently visible map -->
   <div id="info-modal" class="modal fade my-include" src="/partials/modal_info.html" id="header">...</div>
-  <!--  <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">The de'Barbari Map</h4>
-        </div>
-        <div class="modal-body">
-          <!-- <iframe style="border: none; width: 100%; height: 500px;" src="https://docs.google.com/document/d/1UKpaE8840syznkKYdn86LZPocZ53mdzL0Gn7Onp5rVM/pub?embedded=true"></iframe> -->
-    <!--     </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Okay!</button>
-        </div>
-      </div>
-    </div>
-  -->
+
 
   <!-- Modal to add a new geographical feature -->
   <div id="new-feature" class="modal fade my-include" src="/partials/modal_new_feature.html">...</div>
-  <!--
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Save new feature</h4>
-        </div>
-        <div class="modal-body">
-          <div role="tabpanel">
-            <!-- Nav tabs -->
-      <!--      <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#create-coordinates" aria-controls="create-coordinates" role="tab" data-toggle="tab">Existing Feature</a></li>
-              <li role="presentation"><a href="#create-feature" aria-controls="create-feature" role="tab" data-toggle="tab">New Feature</a></li>
-            </ul>
 
-            <!-- Tab panes -->
-  <!--          <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="create-coordinates">
-                <label for="feature-filter">Type: </label><select id="feature-filter" class="form-control layers-select"></select>
-                <label for="old-feature">Feature: </label><select id="old-feature" class="form-control features-select"></select>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="create-feature">
-                <label for="new-feature-name">Name: </label><input id="new-feature-name" class="form-control" placeholder="Name of this landmark">
-                <br />
-                <label for="new-feature-type">Type: </label><select id="new-feature-type" class="form-control layers-select"></select>
-                <br />
-                <label for="new-feature-link">Link: </label><input id="new-feature-link" class="form-control" placeholder="A link to more information (such as a Venipedia page)"></select>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button id="new-feature-discard" type="button" class="btn btn-danger">Delete</button>
-          <button id="new-feature-submit" type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-  <!--  </div><!-- /.modal-dialog -->
-  <!-- </div><!-- /.modal -->
   <!-- Modal to add a new map -->
   <div id="new-map" class="modal fade my-include" src="/partials/modal_new_map.html">...</div>
-<!--    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Create a new map</h4>
-        </div>
-        <div class="modal-body">
-          <label for="new-map-name">Name: </label><input id="new-map-name" class="form-control" placeholder="Name that will appear in the layers list (eg. de'Barbari)">
-          <br />
-          <label for="new-map-id">ID: </label><input id="new-map-id" class="form-control" placeholder="Short name to be used internally (eg. debarbari)">
-          <br />
-          <label for="new-map-year">Year: </label><input id="new-map-year" class="form-control" placeholder="Year this map was created">
-          <br />
-          <label for="new-map-tiles">Tile URL: </label><input id="new-map-tiles" class="form-control" placeholder="URL to the tiles of the map (e.g. http://debarbari.veniceprojectcenter.org/tiles2)">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button id="new-map-button" type="button" class="btn btn-primary">Create</button>
-        </div>
-      </div><!-- /.modal-content -->
-<!--    </div><!-- /.modal-dialog -->
-  <!--</div><!-- /.modal -->
 
   <!-- Modal to add a new layer of geographical features  -->
   <div id="new-layer" class="modal fade my-include" src="/partials/modal_new_layer.html">...</div>
-  <!--  <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Create a new layer</h4>
-        </div>
-        <div class="modal-body">
-          <label for="new-layer-name">Name: </label><input id="new-layer-name" class="form-control" placeholder="Name that will appear in the layers list (eg. Demolished Churches)">
-          <br />
-          <label for="new-layer-id">ID: </label><input id="new-layer-id" class="form-control" placeholder="Short name to be used internally (eg. demolished-church)">
-          <br />
-          <label for="new-layer-color">Color: </label><input id="new-layer-color" class="form-control" placeholder="HTML Color (eg. #c0c0c0 or silver)">
-          <br />
-          <label for="new-layer-parent">Parent: </label><select id="new-layer-parent" class="form-control"><option selected="selected" value="">None</option><option id="new-layer-parent-other" value="Other">Other (Enter below)</option></select>
-          <br />
-          <label for="new-layer-new-parent">Other: </label><input id="new-layer-new-parent" class="form-control" placeholder="Name for layer parent when not in list">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button id="new-layer-button" type="button" class="btn btn-primary">Create</button>
-        </div>
-      </div><!-- /.modal-content -->
-  <!--  </div><!-- /.modal-dialog -->
-  <!-- </div><!-- /.modal -->
+
 
   <!-- Modal to clone feature to another layer -->
   <div id="clone-layer" class="modal fade my-include"src="/partials/modal_clone_feature.html">...</div>
-  <!--  <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Clone to other layer</h4>
-        </div>
-        <div class="modal-body">
-          <label for="clone-layer-type">Layer: </label><select id="clone-layer-type" class="form-control layers-select"></select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button id="clone-button" type="button" class="btn btn-primary">Clone</button>
-        </div>
-      </div><!-- /.modal-content -->
-  <!--  </div><!-- /.modal-dialog -->
-<!--  </div><!-- /.modal -->
+
 
   <!-- Modal to edit feature -->
   <div id="edit-layer" class="modal fade my-include" src="/partials/modal_edit_feature.html">...</div>
-  <!--  <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Edit Feature [<span id="edit-feature-id"></span>]</h4>
-        </div>
-        <div class="modal-body" id="edit-feature">
-          <label for="edit-feature-name">Name: </label><input id="edit-feature-name" class="form-control" placeholder="Name of this landmark"><br />
-          <label for="edit-feature-type">Type: </label><select id="edit-feature-type" class="form-control layers-select"></select><br />
-          <label for="edit-feature-link">Link: </label><input id="edit-feature-link" class="form-control" placeholder="A link to more information (such as a Venipedia page)">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button id="update-button" type="button" class="btn btn-primary">Update</button>
-        </div>
-      </div><!-- /.modal-content -->
-<!--    </div><!-- /.modal-dialog -->
-  <!-- </div><!-- /.modal -->
+
 </body>
 <!--Tiles generated by MapTiler/GDAL2Tiles, Copyright © 2008 Klokan Petr Pridal, GDAL & OSGeo GSoC-->
 </html>

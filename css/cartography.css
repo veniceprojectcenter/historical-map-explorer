@@ -208,3 +208,10 @@ div.header.my-include.inclueded > input.search.form-control.ui-autocomplete-inpu
 margin-left:-1px;
 border-radius: 10px 10px 10px 0px;
 }
+div.login.panel.panel-default.my-include.inclueded > div.panel-body{
+  padding: 10px;
+
+}
+.login-form{
+  background: initial;
+}
