@@ -35,10 +35,10 @@ String.naturalCompare = function(a, b) {
   return 0;
 };
 
-define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataService', 'LayerManager', 'MapManager', 'Downloader', 'jquery-ui', 'bootstrap'], 
+define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawer', 'DataService', 'LayerManager', 'MapManager', 'Downloader', 'jquery-ui', 'bootstrap'],
     function($, UrlMap, Firebase, FirebaseAuth, RectDrawer, PolyDrawer, DataService, LayerManager, MapManager, Downloader) {
   "use strict";
-  
+
   var loadPartial = function(element, url){
     $.ajax({
       url: url,
@@ -50,7 +50,7 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
       }
     });
   };
-  
+
   var loadPartials = function(){
     $('div.my-include:not(.inclueded)').each(function(e){
       console.log('Carico partial ' + $(this).attr('src'));
@@ -58,15 +58,15 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
     });
   };
   loadPartials();
-  
+
   /// CONSTANTS
   var DEFAULT_MAP = 'debarbari';
   var FIREBASE_URL = 'https://placeconsole.firebaseio.com/cartography';
-  
+
   /// EXTERNAL LIBRARIES
   var fb = new Firebase(FIREBASE_URL);
   var fbAuth = new FirebaseAuth(fb);
-  
+
   /// CORE FUNCTIONALITY
   var urlMap = new UrlMap();
   var dataService = new DataService(fb, fbAuth, urlMap.map); //.DEFAULT_MAP);
@@ -100,21 +100,21 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
   var downloader = new Downloader();
   var rectDrawer = new RectDrawer();
   var polyDrawer = new PolyDrawer(mapManager, layerManager, dataService);
-  
-  
-  /* 
+
+
+  /*
    * Load up the autocomplete bar with all the names
    */
   function initializeSearch() {
     var autocompleteNames = [];
-    
+
     fb.child('features').on('child_added', function (snapshot) {
       var feature = snapshot.val();
       feature.id = snapshot.key();
       dataService.push(feature);
       autocompleteNames.push(feature.properties.name);
     });
-    
+
     $(document).ready(function(){
       // The autocomplete plugin accesses its source by reference, so when a new
       // value is added to autocompleteNames the plugin will pick it up
@@ -125,8 +125,8 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
       });
     });
   }
-  
-  /* 
+
+  /*
    * Show the login form
    */
   function showLoginForm(type) {
@@ -137,11 +137,11 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
     else {
       alert("Not working yet. Check back soon!");
       return;
-  
+
       //Uncomment this when it's needed:
       //callback = fbAuth.signup;
     }
-    
+
     function doLogin(){
       console.log("Login attempt started");
       callback($('#email').val(), $('#password').val());
@@ -154,11 +154,11 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
       $('#login-form').css('display', 'none');
       $('#login-text').show();
     });
-  
+
     $('#login-form').css('display', 'block');
     $('#login-text').hide();
   }
-    
+
   // Kick off the loading
   mapManager.initMenu();
   layerManager.initMenu();
@@ -166,9 +166,9 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
 
   // jQuery init
   $(document).ready(function() {
-    
+
     mapManager.initMap();
-    
+
     // Register handlers
     $("#dlbutton").click(function () {
       var link = document.createElement("a");
@@ -198,20 +198,20 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
     $('#new-map-button').click(mapManager.addNewMap);
     $('#new-feature-submit').click(polyDrawer.submitFeature);
     $('#new-feature-discard').click(polyDrawer.discardFeature);
-    
+
     $('#feature-filter').on('change', function() {
       var features = dataService.findDataByType($(this).val()).sort(String.naturalCompare);
-      
+
       var options = features.map(function(feature) {
         return '<option value="'+feature.id+'">'+feature.properties.name+'</option>';
       });
-      
+
       $('.features-select').html(options.join(''));
     });
 
     $('#clone-button').click(layerManager.clonePoly);
     $('#update-button').click(layerManager.editFeature);
-    
+
     $('#map').on('click', '.clone', function() {
       layerManager.cloneModal();
     }).on('click', '.delete', function() {
@@ -250,6 +250,6 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
       }
     });
   });
-  
+
   return true;
 });

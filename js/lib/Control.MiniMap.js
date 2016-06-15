@@ -1,21 +1,21 @@
 L.Control.MiniMap = L.Control.extend({
 	options: {
-		position: 'bottomright',
-		toggleDisplay: false,
+		position: 'bottomleft',
+		toggleDisplay: true,
 		zoomLevelOffset: -5,
 		zoomLevelFixed: false,
 		zoomAnimation: false,
-		autoToggleDisplay: false,
-		width: 150,
-		height: 150,
+		autoToggleDisplay: true,
+		width: 120,
+		height: 120,
 		aimingRectOptions: {color: "#ff7800", weight: 1, clickable: false},
 		shadowRectOptions: {color: "#000000", weight: 1, clickable: false, opacity:0, fillOpacity:0}
 	},
-	
+
 	hideText: 'Hide MiniMap',
-	
+
 	showText: 'Show MiniMap',
-	
+
 	//layer is the map layer to be shown in the minimap
 	initialize: function (layer, options) {
 		L.Util.setOptions(this, options);
@@ -24,7 +24,7 @@ L.Control.MiniMap = L.Control.extend({
 		this.options.shadowRectOptions.clickable = false;
 		this._layer = layer;
 	},
-	
+
 	onAdd: function (map) {
 
 		this._mainMap = map;
@@ -211,7 +211,7 @@ L.Control.MiniMap = L.Control.extend({
 				var currentDiff = this._miniMap.getZoom() - this._mainMap.getZoom();
 				var proposedZoom = this._miniMap.getZoom() - this.options.zoomLevelOffset;
 				var toRet;
-				
+
 				if (currentDiff > this.options.zoomLevelOffset && this._mainMap.getZoom() < this._miniMap.getMinZoom() - this.options.zoomLevelOffset) {
 					//This means the miniMap is zoomed out to the minimum zoom level and can't zoom any more.
 					if (this._miniMap.getZoom() > this._lastMiniMapZoom) {
