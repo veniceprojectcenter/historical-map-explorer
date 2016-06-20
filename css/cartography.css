@@ -222,15 +222,14 @@ div.login.panel.panel-default.my-include.inclueded > div.panel-body{
     top: 42px;
     left: 54px;
 }
-div.btn-group > button.btn.btn-default.giovannifalcone{
-  left: 1300px;
-  top: -132px;
-  border-radius: 20px 20px 20px 20px;
-}
 
-
-
-div.btn-group > button.btn.btn-default.giovanni.no-radius-border{
-  left: 0px;
-  bottom: 35px;
+div.prova > button.buttom-help{
+    position: fixed;
+    top: 12px;
+    right: 230px;
+    padding-left: 9px;
+    padding-bottom: 10px;
+    border: none;
+    background: white;
+    border-radius: 20px;
 }
