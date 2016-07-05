@@ -225,10 +225,16 @@ div.login.panel.panel-default.my-include.inclueded > div.panel-body{
 
 div.prova > button.buttom-help{
     position: fixed;
-    top: 12px;
+    top: 11px;
     right: 230px;
     padding-left: 9px;
     padding-bottom: 10px;
     background: white;
     border-radius: 20px;
+}
+
+div.tooltip{
+  position:absolute;
+  left:10px;
+  top:35px;
 }

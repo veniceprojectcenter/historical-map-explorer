@@ -4,19 +4,19 @@
 	<!-- Want more information about the code? Contact justin.chines@gmail.com -->
 	<meta charset="utf-8">
 	<title>Venetian Historical Map Explorer</title>
-	
+
 	<script data-main="js/init" src="js/lib/require.js"></script>
-	
+
 	<!-- Library CSS -->
 	<link rel="stylesheet" href="css/lib/leaflet.css" />
 	<link rel="stylesheet" href="css/lib/leaflet.draw.css" />
 	<link rel="stylesheet" href="css/lib/jquery-ui.css" />
 	<link rel="stylesheet" href="css/lib/bootstrap.min.css" />
 	<link rel="stylesheet" href="css/lib/Control.MiniMap.css" />
-	
+
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="css/style.css" />
-	
+
 	<script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -30,7 +30,7 @@
 <body>
 	<!-- Map Container -->
 	<div id="map"></div>
-	
+
 	<!-- Top toolbar -->
 	<div class="header" id="mini-header">
 		<input class="search form-control" id="mini-search" placeholder="Search..." />
@@ -51,6 +51,8 @@
 			<button id="dlbutton" class="btn btn-default" data-toggle="tooltip" title="Download what is currently visible"><img class="icon" src="img/filesave.png" /></button>
 			<button id="select" class="btn btn-default" data-toggle="tooltip" title="Download a selection"><img class="icon" src="img/select.png" /></button>
 			<button id="plus-sign" class="btn btn-default" data-toggle="tooltip" title="Get more information"><img class="icon" src="img/about.png" /></button>
+
+			<button id="help" class="btn btn-default buttom-help" data-toggle="tooltip" title="Help you"><i class="material-icons icon">&#xE887;</i></button>
 		</div>
 	</div>
 	
@@ -67,7 +69,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Info modal, shows info about the currently visible map -->
 	<div id="info-modal" class="modal fade" id="header">
 		<div class="modal-dialog">
@@ -85,7 +87,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Modal to add a new geographical feature -->
 	<div id="new-feature" class="modal fade">
 		<div class="modal-dialog">
@@ -127,7 +129,7 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-	
+
 	<!-- Modal to add a new map	-->
 	<div id="new-map" class="modal fade">
 		<div class="modal-dialog">
@@ -152,7 +154,7 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-	
+
 	<!-- Modal to add a new layer of geographical features	-->
 	<div id="new-layer" class="modal fade">
 		<div class="modal-dialog">
@@ -179,7 +181,7 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-	
+
 	<!-- Modal to clone feature to another layer -->
 	<div id="clone-layer" class="modal fade">
 		<div class="modal-dialog">
@@ -198,7 +200,7 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-	
+
 	<!-- Modal to edit feature -->
 	<div id="edit-layer" class="modal fade">
 		<div class="modal-dialog">

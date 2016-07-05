@@ -228,13 +228,20 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
       $('#info-modal').modal('show');
     });
 
+    $('#help').click(function () {
+      $('#help-modal').modal('show');
+    });
+
     // Tooltips
-    $('#dlbutton').tooltip({ placement: 'bottom' });
-    $('#select').tooltip({ placement: 'bottom' });
-    $('#drawmode').tooltip({ placement: 'bottom' });
-    $('#plus-sign').tooltip({ placement: 'bottom' });
-    $('#layers').tooltip({ placement: 'bottom' });
-    $('#maps').tooltip({ placement: 'bottom' });
+    $('#dlbutton').tooltip({ placement: 'right' });
+    $('#select').tooltip({ placement: 'right' });
+    $('#drawmode').tooltip({ placement: 'right' });
+    $('#plus-sign').tooltip({ placement: 'right' });
+    $('#layers').tooltip({ placement: 'right' });
+    $('#maps').tooltip({ placement: 'right' });
+
+    $('#help').tooltip({ placement: 'bottom' });
+
     $('#layer-dropdown').on('show.bs.dropdown', function () {
       try {
         $('#layers').tooltip("hide");
