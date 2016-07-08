@@ -245,9 +245,10 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
     $('#layer-dropdown').on('show.bs.dropdown', function () {
       try {
         $('#layers').tooltip("hide");
-      } catch (e) {
-        $('#layers').tooltip("option", "disabled", true);
-      }
+      }  catch (e) {
+          $('#layers').tooltip("option", "disabled", true);
+        }
+
     });
     $('#map-dropdown').on('show.bs.dropdown', function () {
       try {

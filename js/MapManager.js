@@ -128,7 +128,7 @@ define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 
 					// Add a click handler
 					$(link).click(function() {
-						map.setZoom(1);
+						map.setZoom(3);
 					});
 
 					var img = L.DomUtil.create('img', 'fullscreen-link', link);
