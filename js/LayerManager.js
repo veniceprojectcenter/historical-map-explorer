@@ -45,12 +45,12 @@ define(['lodash'], function(_) {
 
 					$('#' + data.id + '-layer').click(self.toggleLayer.bind(this, data.id, data.color));
 					$('.layers-select').append('<option value="'+data.id+'">'+data.name+'</option>');
-
-					if (defaultEnabledLayer && data.id == defaultEnabledLayer) {
-					  console.log("Imposto colore Layer ", data.id, data.color);
-					  layerColors[data.id] = data.color;
-					  defaultEnabledLayer = undefined;
-      		}
+					
+					console.log("Imposto colore Layer ", data.id, data.color);
+					layerColors[data.id] = data.color;
+					// if (defaultEnabledLayer && data.id == defaultEnabledLayer) {
+					//   defaultEnabledLayer = undefined;
+      		// }
 				});
 			});
 		};
@@ -196,7 +196,7 @@ define(['lodash'], function(_) {
 				self.disableLayer(type);
 			}
 
-			self.updateAutocomplete();
+			// self.updateAutocomplete();
 		};
 
 		this.enableLayer = function(type, color, selectedFeatureId) {
@@ -266,8 +266,9 @@ define(['lodash'], function(_) {
 					});
 
 					if (selectedFeatureId === feature.id) {
-						newPoly.fire('click');
-						mapManager.map.setView(feature.properties.center).setZoom(5);
+						// mapManager.map.setView(feature.properties.center).setZoom(5);
+						mapManager.map.setView(feature.properties.center, 5, { animate: true });
+						setTimeout(function(){ newPoly.fire('click'); }, 850);
 					}
 
 					// Double clicking a polygon will center the landmark
@@ -315,21 +316,22 @@ define(['lodash'], function(_) {
 			});
 		};
 
-		this.updateAutocomplete = function() {
-			// Update autocomplete based on selected layers
-			var activeLandmarks;
-			if (Object.keys(polyState).length === 0) {
-				activeLandmarks = dataService.all();
-			} else {
-				activeLandmarks = Object.keys(activeLandmarksObj).map(function(k){ return activeLandmarksObj[k]; });
-			}
-
-			$('.search').autocomplete({
-				source: activeLandmarks.map(function(feature) {
-					return feature.properties.name;
-				})
-			});
-		};
+		// this.updateAutocomplete = function() {
+		// 	console.log("ZZZ");
+		// 	// Update autocomplete based on selected layers
+		// 	var activeLandmarks;
+		// 	if (Object.keys(polyState).length === 0) {
+		// 		activeLandmarks = dataService.all();
+		// 	} else {
+		// 		activeLandmarks = Object.keys(activeLandmarksObj).map(function(k){ return activeLandmarksObj[k]; });
+		// 	}
+    // 
+		// 	$('.search').autocomplete({
+		// 		source: activeLandmarks.map(function(feature) {
+		// 			return feature.properties.name;
+		// 		})
+		// 	});
+		// };
 	}
 
 	return LayerManager;
