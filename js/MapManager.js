@@ -38,7 +38,7 @@ define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 
 				if (mainLayer) self.map.removeLayer(mainLayer);
 				mainLayer = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', {
-					minZoom: 2,
+					minZoom: 3,
 					maxZoom: newMapId === 'debarbari' ? 8 : 7, //! HACK -- deBarbari has more zoom levels than the rest
 					tms: true,
 					bounds: mapData.bounds,
@@ -47,8 +47,8 @@ define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 
 				if (miniMap) self.map.removeControl(miniMap);
 				var tms2 = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', {
-					minZoom: 1,
-					maxZoom: 1,
+					minZoom: 2,
+					maxZoom: 2,
 					tms: true
 				});
 				miniMap = new L.Control.MiniMap(tms2, { toggleDisplay: true }).addTo(self.map);
