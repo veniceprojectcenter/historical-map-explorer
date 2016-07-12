@@ -107,7 +107,7 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
    */
   function initializeSearch() {
     var autocompleteNames = [];
-                               value
+                               
     fb.child('features').on('child_added', function (snapshot) {
 
     var feature = snapshot.val();
