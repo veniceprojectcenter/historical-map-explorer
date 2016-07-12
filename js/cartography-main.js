@@ -108,26 +108,56 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
   function initializeSearch() {
     var autocompleteNames = [];
                                
-    fb.child('features').on('child_added', function (snapshot) {
-
-    var feature = snapshot.val();
-
-    feature.id = snapshot.key();
-
-    dataService.push(feature);
-
-    autocompleteNames.push(feature.properties.name);
-    });
-
-    $(document).ready(function(){
-      // The autocomplete plugin accesses its source by reference, so when a new
-      // value is added to autocompleteNames the plugin will pick it up
+    $(".search").prop('disabled', true);
+    $(".search").val('loading features....');
+    fb.child('features').on('value', function (snapshot) {
+      var features = snapshot.val();
+      for (var k in features) {
+        var feature = features[k];
+        if (feature.properties && feature.properties.name) {
+          feature.id = k;
+          dataService.push(feature);
+          autocompleteNames.push(feature.properties.name);
+        }
+      }
+      console.log("Completo", autocompleteNames);
+      $(".search").val('');
+      $(".search").prop('disabled', false);
       $(".search").autocomplete({ source: autocompleteNames });
       $(".search").on("autocompleteselect", function (event, ui) {
         var landmark = dataService.findData(ui.item.value);
-        map.setView(landmark.properties.center, 8 /* LOL IGNORE ZOOM (TODO: why?) */, { animate: true });
+        console.log("trovato", landmark);
+        // $.mm = mapManager.map;
+        var current_map = dataService.currentMap();
+        if (landmark.properties.maps.indexOf(current_map) >= 0) {
+          layerManager.enableLayer(landmark.properties.type, undefined, landmark.id);
+          // mapManager.map.setView(landmark.properties.center, 6, { animate: true });
+        } else {
+          alert("La feature non e' presente in questo layer, controlla i layers:\n- " +
+            landmark.properties.maps.join("\n- ")
+          );
+        }
       });
     });
+    
+    // fb.child('features').on('child_added', function (snapshot) {
+    //   var feature = snapshot.val();
+    //   feature.id = snapshot.key();
+    //   dataService.push(feature);
+    //   console.log("Aggiunta feature ", feature);
+    //   autocompleteNames.push(feature.properties.name);
+    // });
+    // 
+    // $(document).ready(function(){
+    //   console.log("Attivata ricerca");
+    //   // The autocomplete plugin accesses its source by reference, so when a new
+    //   // value is added to autocompleteNames the plugin will pick it up
+    //   $(".search").autocomplete({ source: autocompleteNames });
+    //   $(".search").on("autocompleteselect", function (event, ui) {
+    //     var landmark = dataService.findData(ui.item.value);
+    //     map.setView(landmark.properties.center, 8 /* LOL IGNORE ZOOM (TODO: why?) */, { animate: true });
+    //   });
+    // });
   }
 
   /*
