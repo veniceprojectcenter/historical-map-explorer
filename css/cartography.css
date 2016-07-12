@@ -78,7 +78,10 @@ html, body
 .login {
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: 50px;
+  /*width: 250px;
+  white-space: nowrap;
+  overflow: hidden;*/
 }
 .login-text {
   color: black;
@@ -226,7 +229,7 @@ div.login.panel.panel-default.my-include.inclueded > div.panel-body{
 div.prova > button.buttom-help{
     position: fixed;
     top: 11px;
-    right: 250px;
+    right: 2px;
     padding-left: 9px;
     padding-bottom: 10px;
     background: white;

@@ -79,6 +79,9 @@ html, body
 	position: fixed;
 	top: 10px;
 	right: 10px;
+	width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .login-text {
 	color: black;
