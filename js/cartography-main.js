@@ -107,28 +107,35 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
    */
   function initializeSearch() {
     var autocompleteNames = [];
-                               
+
     $(".search").prop('disabled', true);
     $(".search").val('loading features....');
     fb.child('features').on('value', function (snapshot) {
       var features = snapshot.val();
       for (var k in features) {
         var feature = features[k];
+
+
+        // le feature senza geometry non sono visualizabili (dati sporchi)
         if (feature.properties && feature.properties.name) {
           feature.id = k;
           dataService.push(feature);
           autocompleteNames.push(feature.properties.name);
         }
       }
-      console.log("Completo", autocompleteNames);
+      console.log("Completo", autocompleteNames.length);
       $(".search").val('');
       $(".search").prop('disabled', false);
       $(".search").autocomplete({ source: autocompleteNames });
       $(".search").on("autocompleteselect", function (event, ui) {
         var landmark = dataService.findData(ui.item.value);
-        console.log("trovato", landmark);
+        if(!landmark){
+          alert("la feature non ha una geometria definita ("+dataService.findDataRawId(ui.item.value)+")");
+          return;
+        }
         // $.mm = mapManager.map;
         var current_map = dataService.currentMap();
+        console.log("mappa", landmark.properties.maps.indexOf(current_map));
         if (landmark.properties.maps.indexOf(current_map) >= 0) {
           layerManager.enableLayer(landmark.properties.type, undefined, landmark.id);
           // mapManager.map.setView(landmark.properties.center, 6, { animate: true });
@@ -139,7 +146,7 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
         }
       });
     });
-    
+
     // fb.child('features').on('child_added', function (snapshot) {
     //   var feature = snapshot.val();
     //   feature.id = snapshot.key();
@@ -147,7 +154,7 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
     //   console.log("Aggiunta feature ", feature);
     //   autocompleteNames.push(feature.properties.name);
     // });
-    // 
+    //
     // $(document).ready(function(){
     //   console.log("Attivata ricerca");
     //   // The autocomplete plugin accesses its source by reference, so when a new

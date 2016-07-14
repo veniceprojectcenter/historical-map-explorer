@@ -1,7 +1,12 @@
 <!-- Top toolbar -->
 <input class="search form-control" id="mini-search" placeholder="Search..." />
 <div class="btn-group">
-  <div id="map-dropdown" class="btn-group">
+
+  <button id="drawmode" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Draw a new polygon"><i class="material-icons icon">&#xE150;</i></button>
+  <button id="dlbutton" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Download what is currently visible"><i class="material-icons icon">&#xE2C4;</i></button>
+  <button id="select" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Download a selection"><i class="material-icons icon">&#xE8D8;</i> </button>
+  <button id="plus-sign" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Get more information"><i class="material-icons icon">&#xE88F;</i></button>
+  <div id="map-dropdown" class="btn-group" style="margin-left:0px">
     <button id="maps" class="btn btn-default dropdown-toggle no-radius-border " data-toggle="dropdown" data-target="#map-dropdown" title="Select a map"><img  class=" icon" src="img/globe.png"> </button>
     <!-- Note: Keep the following ul tag empty for CSS purposes (this includes whitespace) -->
     <ul class="dropdown-menu loading maps-menu" role="menu"></ul>
@@ -11,12 +16,6 @@
     <!-- Note: Keep the following ul tag empty for CSS purposes (this includes whitespace) -->
     <ul class="dropdown-menu loading layers-menu no-radius-border " role="menu"></ul>
   </div>
-</div>
-<div class="btn-group">
-  <button id="drawmode" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Draw a new polygon"><i class="material-icons icon">&#xE150;</i></button>
-  <button id="dlbutton" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Download what is currently visible"><i class="material-icons icon">&#xE2C4;</i></button>
-  <button id="select" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Download a selection"><i class="material-icons icon">&#xE8D8;</i> </button>
-  <button id="plus-sign" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Get more information"><i class="material-icons icon">&#xE88F;</i></button>
 </div>
 
 <div class="prova">

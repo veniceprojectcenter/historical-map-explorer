@@ -45,7 +45,7 @@ define(['lodash'], function(_) {
 
 					$('#' + data.id + '-layer').click(self.toggleLayer.bind(this, data.id, data.color));
 					$('.layers-select').append('<option value="'+data.id+'">'+data.name+'</option>');
-					
+
 					console.log("Imposto colore Layer ", data.id, data.color);
 					layerColors[data.id] = data.color;
 					// if (defaultEnabledLayer && data.id == defaultEnabledLayer) {
@@ -205,6 +205,21 @@ define(['lodash'], function(_) {
 			} else {
 				color = layerColors[type];
 			}
+			if(enabledLayers.indexOf(type) >=0){
+				if (selectedFeatureId) {
+					var feature = dataService.findDataById(selectedFeatureId);
+					// mapManager.map.setView(feature.properties.center).setZoom(5);
+					mapManager.map.setView(feature.properties.center, 5, { animate: true });
+					var myPoly;
+					var len = polyState[type].length;
+					for (var i = 0; i < len; i++) {
+						console.log("1",polyState[type][i].featureId, selectedFeatureId);
+						if (polyState[type][i].featureId == selectedFeatureId) myPoly=polyState[type][i];
+					}
+					setTimeout(function(){ myPoly.fire('click'); }, 850);
+				}
+				return;
+			}
 
 			// This is used way down in the "visible on x other maps" loop
 			var currentMap = dataService.currentMap();
@@ -223,7 +238,7 @@ define(['lodash'], function(_) {
 
 					// Clicking on a polygon will bring up a pop up
 					newPoly.on('click', function() {
-						var content = '<b class="popup">'+feature.properties.name+'</b>';
+						var content = '<b class="popup">'+feature.properties.name+'--'+feature.id +'</b>';
 						if (feature.properties.link) {
 							content = '<a href="' + feature.properties.link + '" target="blank_">' + content + '</a>';
 						}
@@ -241,7 +256,6 @@ define(['lodash'], function(_) {
 							});
 							content += '</div>';*/
 							var maps = mapManager.getMaps();
-							console.log("Mappe" , maps);
 							content += '<div>';
 						//	console.log("Mappe", mapManager, maps, feature.properties.maps);
 							Object.keys(maps).map(function(k) {
@@ -325,7 +339,7 @@ define(['lodash'], function(_) {
 		// 	} else {
 		// 		activeLandmarks = Object.keys(activeLandmarksObj).map(function(k){ return activeLandmarksObj[k]; });
 		// 	}
-    // 
+    //
 		// 	$('.search').autocomplete({
 		// 		source: activeLandmarks.map(function(feature) {
 		// 			return feature.properties.name;
