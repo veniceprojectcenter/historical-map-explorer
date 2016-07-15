@@ -44,7 +44,7 @@ define(['lodash'], function(_) {
 					$('.layers-menu').removeClass('loading');
 
 					$('#' + data.id + '-layer').click(self.toggleLayer.bind(this, data.id, data.color));
-					$('.layers-select').append('<option value="'+data.id+'">'+data.name+'</option>');
+					// $('.layers-select').append('<option value="'+data.id+'">'+data.name+'</option>');
 
 					console.log("Imposto colore Layer ", data.id, data.color);
 					layerColors[data.id] = data.color;
