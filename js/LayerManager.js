@@ -238,7 +238,7 @@ define(['lodash'], function(_) {
 
 					// Clicking on a polygon will bring up a pop up
 					newPoly.on('click', function() {
-						var content = '<b class="popup">'+feature.properties.name+'--'+feature.id +'</b>';
+						var content = '<b class="popup">'+feature.properties.name+ '</b>';
 						if (feature.properties.link) {
 							content = '<a href="' + feature.properties.link + '" target="blank_">' + content + '</a>';
 						}
