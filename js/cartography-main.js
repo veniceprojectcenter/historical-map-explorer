@@ -71,6 +71,15 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
   var urlMap = new UrlMap();
   var dataService = new DataService(fb, fbAuth, urlMap.map); //.DEFAULT_MAP);
   var mapManager = new MapManager(dataService);
+  $('document').on('close_lpopup', function(){
+    console.log("Chiudo popup");
+    try {
+      mapManager.map.closePopup();
+    }
+    catch(err) {
+      console.log("ARGH");
+    }
+  });
   var layerManager = new LayerManager(dataService, mapManager, urlMap.layer);
   mapManager.onSwitch(function(){
     layerManager.reload();

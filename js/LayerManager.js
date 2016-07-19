@@ -10,7 +10,7 @@ define(['lodash'], function(_) {
 			selectedPoly = null,
 			selectedData = null,
 			activeLandmarksObj = {}; // keyed by feature id
-
+		
 		/* Create a menu item for each layer
 		*/
 		this.initMenu = function () {
@@ -272,7 +272,9 @@ define(['lodash'], function(_) {
 						//	content += '<br />';
 						//}
 						if (dataService.auth.getUser()) {
-							content += '<a class="edit" href="#">Edit</a> <a class="clone" href="#">Clone</a> <a class="delete" href="#">Delete</a>';
+							content += '<a class="edit" href="#">Edit</a> ';
+							// content += '<a class="clone" href="#">Clone</a> ';
+							content += '<a class="delete" href="#">Delete</a>';
 						}
 						L.popup({}, newPoly).setLatLng(newPoly.getBounds().getCenter()).setContent(content).openOn(mapManager.map);
 						selectedPoly = newPoly;

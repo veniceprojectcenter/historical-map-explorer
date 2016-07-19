@@ -23,9 +23,10 @@ define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 		this.getMaps = function(){
 			return maps;
 		};
-
+		
 		this.switchMap = function(newMapId, selectedFeatureId) {
 		  console.log("switch to " + newMapId);
+			$('document').trigger('close_lpopup');
 			dataService.removeGeometries();
 
 			dataService.fb.child('maps').child(newMapId).once('value', function(mapSnap) {
