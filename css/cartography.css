@@ -24,7 +24,11 @@ html, body
   display: inline; /* Override Bootstrap */
   width: 50%;
   border-radius: 5px;
+  position: fixed;
+  left: 10px;
+  top: 10px;
 }
+
 .header-text
 {
   margin: 0;
@@ -45,10 +49,12 @@ html, body
 }
 .header
 {
-  position: fixed;
-  top: 10px;
-  left: 8px;
-  right: 10px;
+   display: inline;
+   position: fixed;
+   left: 11px;
+   top: 44px;
+   height: 300px;
+   width: 45px;
 }
 .gap
 {
@@ -223,7 +229,7 @@ div.login.panel.panel-default.my-include.inclueded > div.panel-body{
 .dropdown-menu{
   position: fixed;
     top: 42px;
-    left: 54px;
+    left: 57px;
 }
 
 div.prova > button.buttom-help{
