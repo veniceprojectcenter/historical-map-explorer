@@ -23,10 +23,11 @@ html, body
 {
   display: inline; /* Override Bootstrap */
   width: 50%;
-  border-radius: 5px;
+  border-radius: 10px 10px 10px 0px;
   position: fixed;
   left: 10px;
   top: 10px;
+  font-weight: bold;
 }
 
 .header-text
