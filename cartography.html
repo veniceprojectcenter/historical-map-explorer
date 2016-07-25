@@ -45,16 +45,14 @@
   </script>
 </head>
 <body>
-  <!-- Map Container -->
-  <div id="map" class:"changes-point-minimap"></div>
 
   <!-- Top toolbar -->
 <!--  <div id="mini-header" class="header my-include" src="/partials/toolbar.html"><font face=”hackers” color="blue">loading...</font></div>
 -->
 <!-- Top toolbar -->
 
-<input class="search form-control" id="mini-search" placeholder="Search..." />
-<div class="header">
+<input class="search form-control z500" id="mini-search" placeholder="Search..." />
+<div class="header z500">
 <div class="btn-group">
 
   <button id="drawmode" class="btn btn-default no-radius-border " data-toggle="tooltip" title="Draw a new polygon"><i class="material-icons icon">&#xE150;</i></button>
@@ -74,12 +72,12 @@
 </div>
 </div>
 
-<div class="prova">
-<button id="help"  class="btn btn-default buttom-help" data-toggle="tooltip" title="report bug"><i class="material-icons icon">&#xE887;</i></button>
+<div class="prova z500">
+<button id="help"  class="btn btn-default buttom-help z500" data-toggle="tooltip" title="report bug"><i class="material-icons icon">&#xE887;</i></button>
 </div>
 
   <!-- Login Pane -->
-  <div class="login panel panel-default my-include" src="/partials/login.html"><font face=”hackers” color="blue">loading...</font></div>
+  <div class="login panel panel-default my-include z500" src="/partials/login.html"><font face=”hackers” color="blue">loading...</font></div>
 
   <!-- Info modal, shows info about the currently visible map -->
   <div id="info-modal" class="modal fade my-include" src="/partials/modal_info.html" id="header"></div>
@@ -87,6 +85,8 @@
    <!-- scritta da NOI -->
    <div id="help-modal" class="modal fade my-include" src="/partials/modal_help.html" id="header2"></div>
 
+   <!-- Map Container -->
+   <div id="map" class:"changes-point-minimap"></div>
 
   <!-- Modal to add a new geographical feature -->
   <div id="new-feature" class="modal fade my-include" src="/partials/modal_new_feature.html"></div>

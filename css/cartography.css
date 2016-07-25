@@ -248,3 +248,9 @@ div.tooltip{
   left:10px;
   top:35px;
 }
+.z500{
+z-index: 500 !important;
+}
+.ui-autocomplete {
+z-index:550 !important;
+}
