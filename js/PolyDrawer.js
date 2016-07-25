@@ -30,7 +30,11 @@ define(['jquery', 'Leaflet', 'LeafletDraw'], function($, L) {
 	
 				$('#new-feature').modal('show');
 				$('.layers-select').val( layerManager.mostRecentlyEnabled() );
-				$('.features-select').trigger('change');
+				// PUT DEFAULT ON $('#new-feature').on('show.bs.modal', function (e) {
+				// IN CARTOGRAPHY-MAIN.JS
+				// setTimeout(function(){ $('#feature-filter').trigger('change'); }, 1250);
+				// setTimeout(function(){ $('.features-select').trigger('change'); }, 1450);
+				
 				$('#drawmode').removeClass('active');
 				return;
 			}

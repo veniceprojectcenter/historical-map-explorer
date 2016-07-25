@@ -170,16 +170,27 @@ define(['lodash'], function(_) {
 		};
 
 		this.deletePoly = function(){
-		  if (!confirm("DELETE feature " + selectedData.id)) return;
+		  if (!confirm("DELETE geometry of feature " + selectedData.id)) return;
 
 		  var cur_type = selectedData.properties.type;
 
-		  dataService.deleteItem(selectedData);
-
-  		console.log("dd", dataService.currentMap(), selectedData.id);
-		  dataService.fb.child('features').child(selectedData.id).remove();
+  		console.log("dd", dataService.currentMap(), selectedData.id, selectedData);
+  		var my_idx = selectedData.properties.maps.indexOf(dataService.currentMap());
+  		if (my_idx > -1) {
+    		selectedData.properties.maps.splice(my_idx, 1);
+    		console.log("Aggiorno", selectedData.id, selectedData.properties.maps);
+    		dataService.fb
+    			.child('features')
+    			.child(selectedData.id)
+    			.child('properties')
+    			.child('maps')
+    			.set(selectedData.properties.maps);
+			}
+		  // dataService.fb.child('features').child(selectedData.id).remove();
 		  dataService.fb.child('geometries').child(dataService.currentMap()).child(selectedData.id).remove();
-
+		  
+		  dataService.deleteItem(selectedData);
+		  
 		  myDisableLayer(cur_type);
   		myEnableLayer(cur_type);
 		}
@@ -216,7 +227,8 @@ define(['lodash'], function(_) {
 						console.log("1",polyState[type][i].featureId, selectedFeatureId);
 						if (polyState[type][i].featureId == selectedFeatureId) myPoly=polyState[type][i];
 					}
-					setTimeout(function(){ myPoly.fire('click'); }, 850);
+					if (myPoly) setTimeout(function(){ myPoly.fire('click'); }, 850);
+					else alert("Feature " + selectedFeatureId + " non trovata layer");
 				}
 				return;
 			}

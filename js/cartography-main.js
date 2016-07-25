@@ -149,9 +149,13 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
           layerManager.enableLayer(landmark.properties.type, undefined, landmark.id);
           // mapManager.map.setView(landmark.properties.center, 6, { animate: true });
         } else {
-          alert("La feature non e' presente in questo layer, controlla i layers:\n- " +
-            landmark.properties.maps.join("\n- ")
-          );
+          if (landmark.properties.maps.length == 0)
+            alert("La feature non e' presente in NESSUN layer");
+          else
+            alert("La feature non e' presente in questo layer, "+
+              "controlla i layers:\n- " +
+              landmark.properties.maps.join("\n- ")
+            );
         }
       });
     });
@@ -257,6 +261,11 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
       });
 
       $('.features-select').html(options.join(''));
+    });
+    $('#new-feature').on('show.bs.modal', function (e) {
+      console.log("Apro NEW FEATURE");
+      setTimeout(function(){ $('#feature-filter').trigger('change'); }, 250);
+      setTimeout(function(){ $('.features-select').trigger('change'); }, 450);
     });
 
     $('#clone-button').click(layerManager.clonePoly);
