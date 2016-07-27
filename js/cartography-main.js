@@ -1,4 +1,6 @@
 // From: https://github.com/litejs/natural-compare-lite
+var hide_prova = true;
+
 String.naturalCompare = function(a, b) {
   var i, codeA, codeB = 1, posA = 0, posB = 0, alphabet = String.alphabet;
 

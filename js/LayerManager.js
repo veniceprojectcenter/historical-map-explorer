@@ -16,6 +16,8 @@ define(['lodash'], function(_) {
 		this.initMenu = function () {
 			dataService.get('layers', function (snapshot) {
 				var data = snapshot.val();
+				
+				if (hide_prova && data.name == 'Prova') return;
 
 				$(document).ready(function() {
 					var newOption = '<li role="presentation"><a role="menuitem" id="'+data.id+'-layer" href="#">'+data.name+'</a></li>';
