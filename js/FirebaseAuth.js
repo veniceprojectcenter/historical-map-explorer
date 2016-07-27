@@ -63,7 +63,7 @@ define(['FirebaseSimpleLogin'], function(FirebaseSimpleLogin) {
 			auth.logout();
 			fbUser = undefined;
 			loggedIn = false;
-			$('document').trigger('close_lpopup');
+			$(document).trigger('close_lpopup');
 		};
 
 		/* Signup the user using the given email and password

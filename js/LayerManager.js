@@ -10,7 +10,7 @@ define(['lodash'], function(_) {
 			selectedPoly = null,
 			selectedData = null,
 			activeLandmarksObj = {}; // keyed by feature id
-		
+
 		/* Create a menu item for each layer
 		*/
 		this.initMenu = function () {
@@ -188,9 +188,9 @@ define(['lodash'], function(_) {
 			}
 		  // dataService.fb.child('features').child(selectedData.id).remove();
 		  dataService.fb.child('geometries').child(dataService.currentMap()).child(selectedData.id).remove();
-		  
+
 		  dataService.deleteItem(selectedData);
-		  
+
 		  myDisableLayer(cur_type);
   		myEnableLayer(cur_type);
 		}
@@ -294,9 +294,11 @@ define(['lodash'], function(_) {
 					});
 
 					if (selectedFeatureId === feature.id) {
-						// mapManager.map.setView(feature.properties.center).setZoom(5);
-						mapManager.map.setView(feature.properties.center, 5, { animate: true });
-						setTimeout(function(){ newPoly.fire('click'); }, 850);
+						setTimeout(function(){
+							//console.log(newPoly.getBounds().getCenter());
+							mapManager.map.setView(newPoly.getBounds().getCenter(), 5, { animate: true });
+							newPoly.fire('click');
+						}, 750);
 					}
 
 					// Double clicking a polygon will center the landmark

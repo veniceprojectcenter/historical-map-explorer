@@ -71,18 +71,23 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
   var urlMap = new UrlMap();
   var dataService = new DataService(fb, fbAuth, urlMap.map); //.DEFAULT_MAP);
   var mapManager = new MapManager(dataService);
-  $('document').on('close_lpopup', function(){
-    console.log("Chiudo popup");
-    try {
-      mapManager.map.closePopup();
-    }
-    catch(err) {
-      console.log("ARGH");
-    }
+  $.x=mapManager;
+  $(document).ready(function(){
+    $(document).on('close_lpopup', function(){
+      console.log("Chiudo popup");
+      try {
+        mapManager.map.closePopup();
+      }
+      catch(err) {
+        console.log("ARGH");
+      }
+    });
   });
+
+
   var layerManager = new LayerManager(dataService, mapManager, urlMap.layer);
-  mapManager.onSwitch(function(){
-    layerManager.reload();
+  mapManager.onSwitch(function(mapData, selectedFeatureId){
+    layerManager.reload(undefined,selectedFeatureId);
     if (urlMap.layer) {
       setTimeout(function(){
         console.log("Abilito Layer " + urlMap.layer);
@@ -100,7 +105,7 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
             });
           });
         } else
-          layerManager.enableLayer(urlMap.layer);
+          layerManager.enableLayer(urlMap.layer, undefined, selectedFeatureId);
       }, 1250);
     }
   });
@@ -277,7 +282,6 @@ define(['jquery', 'UrlMap', 'Firebase', 'FirebaseAuth', 'RectDrawer', 'PolyDrawe
       layerManager.deletePoly();
     }).on('click', '.show_other_map', function() {
       var selectedData = layerManager.selectedData();
-      mapManager.map.closePopup();
       mapManager.switchMap($(this).attr('data-map-id'), selectedData.id);
     }).on('click', '.edit', function() {
       layerManager.editModal();

@@ -23,10 +23,10 @@ define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 		this.getMaps = function(){
 			return maps;
 		};
-		
+
 		this.switchMap = function(newMapId, selectedFeatureId) {
 		  console.log("switch to " + newMapId);
-			$('document').trigger('close_lpopup');
+			$(document).trigger('close_lpopup');
 			dataService.removeGeometries();
 
 			dataService.fb.child('maps').child(newMapId).once('value', function(mapSnap) {
@@ -37,26 +37,49 @@ define(['jquery', 'Leaflet', 'LeafletMiniMap'], function($, L) {
 				}
 				var tileUrl = mapData.tiles;
 
+
 				if (mainLayer) self.map.removeLayer(mainLayer);
-				mainLayer = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', {
-					minZoom: 3,
-					maxZoom: newMapId === 'debarbari' ? 8 : 7, //! HACK -- deBarbari has more zoom levels than the rest
+				var mapOption = {
+					minZoom: 2,
+					maxZoom: 7,
 					tms: true,
 					bounds: mapData.bounds,
-					contonuousWorld: true
-				}).addTo(self.map);
+					detectRetina: true,
+					continuousWorld: true,
+					errorTileUrl:'/img/empty.png'
+					// noWrap: true
+				};
+       if(newMapId === 'debarbari'){
+				 mapOption.maxZoom = 8; //! HACK -- deBarbari has more zoom levels than the rest
+			 }
+				if(newMapId === 'today'){
+        mapOption.minZoom = 14;
+				mapOption.maxZoom = 19;
+				mapOption.tms = false;
+				mapOption.continuousWorld = false;
+				}
+				mainLayer = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', mapOption).addTo(self.map);
 
 				if (miniMap) self.map.removeControl(miniMap);
-				var tms2 = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', {
+				var miniOption = {
 					minZoom: 2,
 					maxZoom: 2,
 					tms: true
-				});
-				miniMap = new L.Control.MiniMap(tms2, { toggleDisplay: true }).addTo(self.map);
+				};
+				if(newMapId ==='today'){ // Sul today non mostro la minimappas
+				//  miniOption.minZoom = 12;
+				// 	miniOption.manZoom = 12;
+				//	miniOption.tms= false;
+				} else{
+					var tms2 = L.tileLayer(tileUrl+'/{z}/{x}/{y}.png', miniOption);
+				  miniMap = new L.Control.MiniMap(tms2, { toggleDisplay: true }).addTo(self.map);
+				}
+
 
 				if (mapData.bounds) self.map.fitBounds(shiftBounds(mapData.bounds));
 
 				dataService.setMap(newMapId);
+				console.log("switch", mapSnap.val(), selectedFeatureId);
 				switchFunc(mapSnap.val(), selectedFeatureId);
 
 				$('.map-menu-link').css('font-weight', 400);
